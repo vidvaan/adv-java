@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSP Introduction</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JSP Introduction -->
+    <section>
+      <h2>JSP Introduction</h2>
+      <p>JavaServer Pages (JSP) is a technology used for developing web-based applications. It allows embedding Java code within HTML pages, enabling dynamic content generation. JSP is a part of the Java EE (Enterprise Edition) specification and is widely used for creating server-side applications.</p>
+
+      <h3>1. What is JSP?</h3>
+      <p>JSP is a server-side technology that helps developers create dynamic web pages using HTML and Java. It allows Java code to be inserted directly into the HTML markup, enabling the generation of dynamic content like databases, user sessions, and more.</p>
+      <ul>
+        <li>JSP is compiled into servlets by the container.</li>
+        <li>It offers a more flexible and concise approach for handling dynamic content compared to traditional servlets.</li>
+        <li>It allows the use of JavaBeans for reusable components and tag libraries for custom components.</li>
+      </ul>
+
+      <h3>How to Create a JSP</h3>
+      <p>To create a JSP, follow these steps:</p>
+      <ol>
+        <li>Ensure you have a Java web server or servlet container like Apache Tomcat.</li>
+        <li>Create a new file with the extension <code>.jsp</code>.</li>
+        <li>Write HTML code along with Java code for dynamic content generation.</li>
+        <li>Deploy the JSP file to the server (e.g., Tomcat) and access it through a web browser.</li>
+      </ol>
+
+      <h3>Hello World JSP Application</h3>
+      <p>Here's a simple "Hello World" JSP application that outputs "Hello, World!" to the browser:</p>
+
+      <h4>JSP Code Example:</h4>
+      <pre><code>
+&lt;%-- hello.jsp --%>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello World JSP&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+      <p>This basic JSP page will render the message "Hello, World!" when accessed via a web browser. The file is named <code>hello.jsp</code> and should be placed in the web application's directory. Upon visiting the URL of the JSP, the servlet container processes the JSP file and generates an HTML response.</p>
+
+
+      <!-- Scripting Elements -->
+      <h3>2. Scripting Elements in JSP</h3>
+      <p>JSP provides several scripting elements to insert dynamic Java code into the HTML. These elements allow interaction with variables, methods, and control flow in the page.</p>
+
+      <h4>Types of Scripting Elements:</h4>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Scripting Element</th>
+            <th>Explanation</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Declarations</strong></td>
+            <td>Used to declare variables and methods. They are written outside any method or constructor in the JSP.</td>
+            <td><code>&lt;%! int count = 0; %&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Scriptlets</strong></td>
+            <td>Allow embedding Java code that gets executed every time the JSP is requested.</td>
+            <td><code>&lt;% count++; %&gt;</code></td>
+          </tr>
+          <tr>
+            <td><strong>Expressions</strong></td>
+            <td>Used to output the value of an expression directly to the client. The value is automatically converted to a string.</td>
+            <td><code>&lt;%= count %&gt;</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Example of JSP Scripting:</h4>
+      <pre><code>
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;%-- Declaration: Declare a variable --%&gt;
+    &lt;%! int count = 0; %&gt;
+
+    &lt;%-- Scriptlet: Increment the variable --%&gt;
+    &lt;% count++; %&gt;
+
+    &lt;h1&gt;Count: &lt;%= count %&gt;&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+      <!-- JSP Life Cycle -->
+      <h3>3. JSP Life Cycle</h3>
+      <p>The life cycle of a JSP page involves several stages that help in processing the request and generating the response. These stages are managed by the JSP container, such as Apache Tomcat.</p>
+
+      <h4>JSP Life Cycle Phases:</h4>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Translation</strong></td>
+            <td>The JSP file is converted into a servlet by the JSP container. This is done only once, the first time the JSP is requested.</td>
+          </tr>
+          <tr>
+            <td><strong>Compilation</strong></td>
+            <td>The JSP servlet is compiled into a Java class file by the container if the JSP is not already compiled.</td>
+          </tr>
+          <tr>
+            <td><strong>Initialization</strong></td>
+            <td>The servlet is initialized by calling the <code>init()</code> method. This happens only once when the servlet is first loaded.</td>
+          </tr>
+          <tr>
+            <td><strong>Request Processing</strong></td>
+            <td>The container processes the request by calling the <code>service()</code> method of the servlet, which generates the response.</td>
+          </tr>
+          <tr>
+            <td><strong>Destroy</strong></td>
+            <td>The servlet is destroyed when the web container shuts down or when the servlet is no longer needed. The <code>destroy()</code> method is called.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Summary of JSP Life Cycle</h4>
+      <ul>
+        <li>The JSP is first translated into a servlet.</li>
+        <li>It is compiled into a Java class.</li>
+        <li>The servlet is initialized, and request processing begins.</li>
+        <li>After processing the request, the response is sent back to the client.</li>
+        <li>Finally, the servlet is destroyed when no longer needed.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

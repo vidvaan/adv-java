@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CallableStatement, Stored Procedures, and Functions</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <section>
+      <h2>CallableStatement, Stored Procedures, and Functions</h2>
+
+      <h3>1. What is a Stored Procedure?</h3>
+      <p>A stored procedure is a precompiled set of SQL statements that are stored in the database and can be executed as a single unit. It is used to encapsulate reusable logic to simplify complex operations, improve performance, and enforce data integrity.</p>
+
+      <h4>Key Features:</h4>
+      <ul>
+        <li>Precompiled for faster execution.</li>
+        <li>Supports input, output, and input-output parameters.</li>
+        <li>Can encapsulate complex business logic.</li>
+      </ul>
+
+      <h4>Types of Parameters:</h4>
+      <ul>
+        <li><strong>IN:</strong> Used to pass input values to the procedure.</li>
+        <li><strong>OUT:</strong> Used to return output values.</li>
+        <li><strong>INOUT:</strong> Used for both input and output.</li>
+      </ul>
+
+      <h3>2. What is a Function in a Database?</h3>
+      <p>A function is a reusable database object that returns a single value. Functions are often used for calculations or processing data.</p>
+
+      <h4>Key Features:</h4>
+      <ul>
+        <li>Must return a value.</li>
+        <li>Cannot have output parameters.</li>
+        <li>Primarily used for computations.</li>
+      </ul>
+
+      <h4>Procedure vs Function:</h4>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Stored Procedure</th>
+            <th>Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Returns Value</td>
+            <td>Can return multiple values via OUT parameters.</td>
+            <td>Must return a single value.</td>
+          </tr>
+          <tr>
+            <td>Usage</td>
+            <td>Used for executing business logic and data manipulation.</td>
+            <td>Used for calculations and returning values.</td>
+          </tr>
+          <tr>
+            <td>Invocation</td>
+            <td>Called using CALL or CallableStatement.</td>
+            <td>Called in SQL statements.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>3. Creating and Executing a Procedure in MySQL</h3>
+      <pre><code>
+-- Create Procedure
+DELIMITER //
+CREATE PROCEDURE GetEmployeeCount (OUT count INT)
+BEGIN
+  SELECT COUNT(*) INTO count FROM employees;
+END //
+DELIMITER ;
+
+-- Execute Procedure
+CALL GetEmployeeCount(@count);
+SELECT @count;
+      </code></pre>
+
+      <h4>Calling Procedure Using CallableStatement:</h4>
+      <pre><code>
+import java.sql.*;
+
+public class CallableStatementExample {
+    public static void main(String[] args) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_db", "root", "password")) {
+            CallableStatement cs = conn.prepareCall("{CALL GetEmployeeCount(?)}");
+            cs.registerOutParameter(1, Types.INTEGER);
+            cs.execute();
+            int count = cs.getInt(1);
+            System.out.println("Employee Count: " + count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>4. Creating and Executing a Function in MySQL</h3>
+      <pre><code>
+-- Create Function
+DELIMITER //
+CREATE FUNCTION GetDepartmentCount() RETURNS INT
+BEGIN
+  DECLARE count INT;
+  SELECT COUNT(DISTINCT department) INTO count FROM employees;
+  RETURN count;
+END //
+DELIMITER ;
+
+-- Execute Function
+SELECT GetDepartmentCount();
+      </code></pre>
+
+      <h4>Calling Function Using CallableStatement:</h4>
+      <pre><code>
+import java.sql.*;
+
+public class CallableFunctionExample {
+    public static void main(String[] args) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_db", "root", "password")) {
+            CallableStatement cs = conn.prepareCall("{? = CALL GetDepartmentCount()}");
+            cs.registerOutParameter(1, Types.INTEGER);
+            cs.execute();
+            int departmentCount = cs.getInt(1);
+            System.out.println("Department Count: " + departmentCount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>5. Statement vs PreparedStatement vs CallableStatement</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Statement</th>
+            <th>PreparedStatement</th>
+            <th>CallableStatement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Use</td>
+            <td>Execute simple SQL queries.</td>
+            <td>Execute parameterized SQL queries.</td>
+            <td>Execute stored procedures and functions.</td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td>Prone to SQL injection.</td>
+            <td>Prevents SQL injection with parameterized queries.</td>
+            <td>Prevents SQL injection for stored procedures and functions.</td>
+          </tr>
+          <tr>
+            <td>Performance</td>
+            <td>Slower for repeated queries.</td>
+            <td>Faster for repeated queries.</td>
+            <td>Optimized for stored procedures and functions.</td>
+          </tr>
+          <tr>
+            <td>Reusability</td>
+            <td>Not reusable for different queries.</td>
+            <td>Reusable with different parameters.</td>
+            <td>Reusable for invoking procedures/functions.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

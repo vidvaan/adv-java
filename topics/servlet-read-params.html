@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Parameters and Servlet Form Submission</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Request Parameters -->
+    <section>
+      <h2>What is a Request Parameter?</h2>
+      <p>A request parameter is a piece of data sent by the client to the server as part of an HTTP request. These are commonly used to pass information such as form data, query strings, or URL parameters.</p>
+
+      <h3>How to Read Request Parameters in a Servlet</h3>
+      <p>Servlets provide methods to read request parameters:</p>
+      <ul>
+        <li><code>getParameter(String name)</code>: Retrieves the value of a specific parameter.</li>
+        <li><code>getParameterNames()</code>: Retrieves all parameter names as an enumeration.</li>
+        <li><code>getParameterValues(String name)</code>: Retrieves all values for a given parameter (useful for checkboxes).</li>
+      </ul>
+    </section>
+
+    <!-- Section: Query Strings -->
+    <section>
+      <h2>Query Strings</h2>
+      <p>Query strings are used to pass parameters to a servlet or web page by appending them to the URL. They are a common way of transferring data in GET requests.</p>
+      <ul>
+        <li>The query string starts after the <code>?</code> symbol in a URL.</li>
+        <li>Parameters are separated by <code>&</code>.</li>
+        <li>Each parameter consists of a <strong>name</strong> and a <strong>value</strong>, separated by an equal sign (<code>=</code>).</li>
+      </ul>
+
+      <h3>Example of a Query String</h3>
+      <p>Here is an example URL with a query string:</p>
+      <pre><code>http://example.com/servlet?name=JohnDoe&age=25&city=NewYork</code></pre>
+      <p>This URL contains the following parameters:</p>
+      <ul>
+        <li><strong>name</strong>: JohnDoe</li>
+        <li><strong>age</strong>: 25</li>
+        <li><strong>city</strong>: NewYork</li>
+      </ul>
+
+      <h3>How to Read Query Strings in a Servlet?</h3>
+      <p>In the servlet, you can use the <code>getParameter()</code> method of <code>HttpServletRequest</code> to read the query string parameters:</p>
+      <pre><code>
+String name = request.getParameter("name");
+String age = request.getParameter("age");
+String city = request.getParameter("city");
+</code></pre>
+      <p>You can then use the retrieved values to process the request and generate a dynamic response.</p>
+
+      <h4>Example Servlet Code:</h4>
+      <pre><code>
+public class QueryStringServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String name = request.getParameter("name");
+        String age = request.getParameter("age");
+        String city = request.getParameter("city");
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("&lt;h1&gt;User Information&lt;/h1&gt;");
+        out.println("&lt;p&gt;Name: " + name + "&lt;/p&gt;");
+        out.println("&lt;p&gt;Age: " + age + "&lt;/p&gt;");
+        out.println("&lt;p&gt;City: " + city + "&lt;/p&gt;");
+    }
+}
+</code></pre>
+    </section>
+
+    <section>
+      <h2>Form Data Reading in Servlet</h2>
+      <p>In this section, we will discuss how form data is sent from the client to the server and how to read that data in a servlet using the <code>HttpServletRequest</code> object.</p>
+
+      <h3>How Form Data is Sent</h3>
+      <p>When you submit a form from an HTML page, the form data is sent to the server using either the GET or POST method. The form data is sent as key-value pairs in the request body (POST) or in the URL (GET).</p>
+
+      <h3>HTML Form Example</h3>
+      <pre><code>
+        &lt;form action=&quot;/submitForm&quot; method=&quot;POST&quot;&gt;
+            &lt;label for=&quot;name&quot;&gt;Name:&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot; required&gt;&lt;br&gt;&lt;br&gt;
+        
+            &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+            &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot; required&gt;&lt;br&gt;&lt;br&gt;
+        
+            &lt;label for=&quot;age&quot;&gt;Age:&lt;/label&gt;
+            &lt;input type=&quot;number&quot; id=&quot;age&quot; name=&quot;age&quot; required&gt;&lt;br&gt;&lt;br&gt;
+        
+            &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+        &lt;/form&gt;
+        </code></pre>
+        
+
+      <h3>Reading Form Data in Servlet</h3>
+      <p>In the servlet, we can read the form data using the <code>getParameter()</code> method of the <code>HttpServletRequest</code> object:</p>
+      <pre><code>
+String name = request.getParameter("name");
+String email = request.getParameter("email");
+String age = request.getParameter("age");
+</code></pre>
+      <p>These methods return the form data as strings. You can then use the data to process the request or perform any necessary operations on the server.</p>
+
+      <h3>Java Code Example:</h3>
+      <pre><code>
+public class FormDataServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String age = request.getParameter("age");
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("&lt;h1&gt;Form Data Submitted&lt;/h1&gt;");
+        out.println("&lt;p&gt;Name: " + name + "&lt;/p&gt;");
+        out.println("&lt;p&gt;Email: " + email + "&lt;/p&gt;");
+        out.println("&lt;p&gt;Age: " + age + "&lt;/p&gt;");
+    }
+}
+</code></pre>
+    </section>
+
+    <section>
+      <h2>GET vs POST Requests</h2>
+      <p>In HTTP, GET and POST are two commonly used methods for sending data between a client and a server. While they serve similar purposes, they differ in how the data is sent, security, and use cases.</p>
+
+      <!-- GET Request -->
+      <h3>1. GET Request</h3>
+      <p>The GET method is used to request data from a specified resource. It appends data to the URL, which makes it less secure and suitable for non-sensitive data or retrieving information.</p>
+      <ul>
+        <li><strong>Data Sending:</strong> Data is appended to the URL as query parameters (e.g., <code>?name=John&age=25</code>).</li>
+        <li><strong>Security:</strong> Data is visible in the URL, making it less secure.</li>
+        <li><strong>Length Limit:</strong> URL length is limited (around 2000 characters depending on the browser and server).</li>
+        <li><strong>Use Cases:</strong> Used for retrieving data or requesting non-sensitive information (e.g., search queries, pagination).</li>
+      </ul>
+
+      <!-- POST Request -->
+      <h3>2. POST Request</h3>
+      <p>The POST method is used to send data to the server for processing (e.g., submitting a form). It sends data in the request body, making it more secure than GET for transmitting sensitive data.</p>
+      <ul>
+        <li><strong>Data Sending:</strong> Data is sent in the body of the request, not visible in the URL.</li>
+        <li><strong>Security:</strong> More secure than GET because the data is not exposed in the URL.</li>
+        <li><strong>Length Limit:</strong> No practical size limit for data compared to GET.</li>
+        <li><strong>Use Cases:</strong> Used for submitting form data, login credentials, or any data that modifies the server state.</li>
+      </ul>
+
+      <!-- Comparison Table -->
+      <h3>3. GET vs POST Comparison</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>GET</th>
+            <th>POST</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Data Location</td>
+            <td>Appended to URL as query parameters</td>
+            <td>Sent in the body of the request</td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td>Less secure (data visible in URL)</td>
+            <td>More secure (data hidden in body)</td>
+          </tr>
+          <tr>
+            <td>Data Size</td>
+            <td>Limited by URL length (around 2000 characters)</td>
+            <td>No significant limit</td>
+          </tr>
+          <tr>
+            <td>Use Case</td>
+            <td>Retrieving data, search queries, navigation</td>
+            <td>Submitting data, forms, login</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Example GET Request -->
+      <h3>4. Example GET Request</h3>
+      <pre><code>
+&lt;a href=&quot;/search?query=java&quot;&gt;Search for Java&lt;/a&gt;
+</code></pre>
+      <p>This example demonstrates a GET request, where the query parameter <code>query=java</code> is appended to the URL.</p>
+
+      <!-- Example POST Request -->
+      <h3>5. Example POST Request</h3>
+      <pre><code>
+&lt;form action=&quot;/submit&quot; method=&quot;POST&quot;&gt;
+  &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;
+  &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+      <p>This example demonstrates a POST request, where the form data is sent securely in the request body when the form is submitted.</p>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

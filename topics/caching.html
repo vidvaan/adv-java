@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caching in Hibernate</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <section>
+      <h2>Caching in Hibernate</h2>
+      <p>Caching is an important feature of Hibernate that helps to improve the performance of applications by reducing the number of database queries. Hibernate provides several caching mechanisms to store data temporarily in memory and reuse it when needed.</p>
+
+      <h3>1. What is Caching in Hibernate?</h3>
+      <p><strong>Hibernate Caching</strong> refers to storing the results of database queries and entities in memory for reuse, thus avoiding repeated database accesses for the same data. Hibernate supports caching at two levels: <strong>First Level Cache</strong> and <strong>Second Level Cache</strong>.</p>
+
+      <h4>Types of Caching in Hibernate:</h4>
+      <ul>
+        <li><strong>First Level Cache:</strong> The first level cache is enabled by default in Hibernate and is associated with the <code>Session</code> object. It stores objects for the duration of a session. Once the session is closed, the cache is cleared.</li>
+        <li><strong>Second Level Cache:</strong> The second level cache is optional and exists at the session factory level. It stores data beyond the scope of a single session, allowing you to cache entities and collections across multiple sessions.</li>
+      </ul>
+
+      <h3>2. First Level Cache (Session Cache)</h3>
+      <p>The first level cache is automatically provided by Hibernate. It caches data on a per-session basis. When an entity is loaded, it is stored in the cache, and subsequent requests for the same entity during the same session will retrieve the entity from the cache instead of querying the database.</p>
+
+      <h4>Example of First Level Cache:</h4>
+      <pre><code>
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class FirstLevelCacheExample {
+    public static void main(String[] args) {
+        // Create session factory
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Employee.class).buildSessionFactory();
+        
+        // Open session 1
+        Session session1 = factory.getCurrentSession();
+        session1.beginTransaction();
+        
+        // Fetch an employee by primary key (this will hit the database)
+        Employee emp1 = session1.get(Employee.class, 1);
+        System.out.println("Employee: " + emp1);
+        
+        // Fetch again (this will hit the first-level cache)
+        Employee emp2 = session1.get(Employee.class, 1);
+        System.out.println("Employee: " + emp2);
+        
+        session1.getTransaction().commit();
+        session1.close(); // Cache is cleared after session is closed
+        factory.close();
+    }
+}
+      </code></pre>
+      <p>In this example, the second time the employee is fetched, it is retrieved from the first-level cache, which avoids querying the database again.</p>
+
+      <h3>3. Second Level Cache</h3>
+      <p>The second level cache is a more advanced caching mechanism that can be configured in Hibernate to store entities and collections beyond the scope of a session. You can use second-level cache to cache data across sessions.</p>
+
+      <h4>Configuration for Second Level Cache:</h4>
+      <ul>
+        <li>Enable second-level cache by setting the <code>hibernate.cache.use_second_level_cache</code> property to <code>true</code> in your <code>hibernate.cfg.xml</code> file.</li>
+        <li>Define a cache provider, such as EhCache or Infinispan, in the Hibernate configuration.</li>
+        <li>Use cache annotations or mapping files to specify which entities should be cached.</li>
+      </ul>
+
+      <h4>Example of Second Level Cache:</h4>
+      <pre><code>
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cache.ehcache.EhCacheRegionFactory;
+
+public class SecondLevelCacheExample {
+    public static void main(String[] args) {
+        // Configure Hibernate to use second-level cache (EhCache)
+        SessionFactory factory = new Configuration()
+            .configure("hibernate.cfg.xml")
+            .addAnnotatedClass(Employee.class)
+            .buildSessionFactory();
+        
+        // Open session 1
+        Session session1 = factory.getCurrentSession();
+        session1.beginTransaction();
+        
+        // Fetch an employee by primary key (will be cached in second-level cache)
+        Employee emp1 = session1.get(Employee.class, 1);
+        System.out.println("Employee: " + emp1);
+        
+        session1.getTransaction().commit();
+        
+        // Open session 2
+        Session session2 = factory.getCurrentSession();
+        session2.beginTransaction();
+        
+        // Fetch the same employee (this will hit the second-level cache)
+        Employee emp2 = session2.get(Employee.class, 1);
+        System.out.println("Employee from second-level cache: " + emp2);
+        
+        session2.getTransaction().commit();
+        session1.close();
+        session2.close();
+        factory.close();
+    }
+}
+      </code></pre>
+      <p>In this example, after the first session is committed, the employee entity is stored in the second-level cache. In the second session, the employee is fetched from the cache, avoiding a database query.</p>
+
+      <h3>4. Configuring Cache in Hibernate</h3>
+      <p>To configure the second-level cache in Hibernate, the following steps need to be performed:</p>
+      <ul>
+        <li>Include the necessary dependency for the cache provider (e.g., EhCache or Infinispan).</li>
+        <li>Configure cache settings in <code>hibernate.cfg.xml</code> or through annotations.</li>
+        <li>Enable caching for specific entities using the <code>@Cache</code> annotation or in the mapping file.</li>
+      </ul>
+
+      <h4>Hibernate Cache Configuration in <code>hibernate.cfg.xml</code>:</h4>
+      <pre><code>
+<hibernate-configuration>
+    <session-factory>
+        <!-- Enable second-level cache -->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        
+        <!-- Set cache provider to EhCache -->
+        <property name="hibernate.cache.region.factory_class">
+            org.hibernate.cache.ehcache.EhCacheRegionFactory
+        </property>
+        
+        <!-- Enable query cache -->
+        <property name="hibernate.cache.use_query_cache">true</property>
+    </session-factory>
+</hibernate-configuration>
+      </code></pre>
+
+      <h3>5. Cache Annotations</h3>
+      <p>You can use the <code>@Cache</code> annotation to specify that an entity should be cached:</p>
+
+      <h4>Example of Cache Annotation:</h4>
+      <pre><code>
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Employee {
+    @Id
+    private int id;
+    private String name;
+    private double salary;
+
+    // getters and setters
+}
+      </code></pre>
+      <p>In this example, the <code>Employee</code> entity is cached with a "read-write" concurrency strategy, meaning that data can be safely modified and cached across multiple sessions.</p>
+
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

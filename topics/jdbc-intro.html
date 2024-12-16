@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JDBC Introduction</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JDBC Introduction -->
+    <section>
+      <h2>JDBC Introduction</h2>
+      <p>Java Database Connectivity (JDBC) is an API that enables Java applications to interact with relational databases. It provides a standard interface for connecting to databases, executing SQL queries, and handling database results. JDBC is essential for any Java application that needs to interact with a database, whether it’s for retrieving, updating, or deleting data.</p>
+
+      <h3>Key Features of JDBC</h3>
+      <ul>
+        <li><strong>Database Connectivity:</strong> JDBC allows Java applications to establish a connection to different types of databases.</li>
+        <li><strong>Executing SQL Queries:</strong> JDBC provides methods to execute various types of SQL queries, including SELECT, INSERT, UPDATE, and DELETE.</li>
+        <li><strong>Transaction Management:</strong> JDBC supports transaction management, allowing for commit and rollback operations to ensure data consistency.</li>
+        <li><strong>Exception Handling:</strong> JDBC provides robust exception handling to deal with SQL errors and database connection issues.</li>
+        <li><strong>Support for Multiple Databases:</strong> JDBC can connect to various relational databases like MySQL, Oracle, PostgreSQL, etc.</li>
+      </ul>
+
+      <h3>Connecting to MySQL Database Using JDBC</h3>
+      <p>To connect to a MySQL database using JDBC, follow these steps:</p>
+      <ol>
+        <li>Ensure you have the MySQL JDBC driver (e.g., <code>mysql-connector-java.jar</code>) added to your classpath.</li>
+        <li>Load the MySQL JDBC driver class using <code>Class.forName("com.mysql.cj.jdbc.Driver")</code>.</li>
+        <li>Establish a connection to the database using <code>DriverManager.getConnection()</code> with the database URL, username, and password.</li>
+        <li>Create a statement object to execute SQL queries.</li>
+        <li>Process the result set returned from the query.</li>
+        <li>Close the connection after the operations are completed.</li>
+      </ol>
+      <h4>Example Code for MySQL Connection:</h4>
+      <pre><code>
+import java.sql.*;
+
+public class MySQLJDBC {
+    public static void main(String[] args) {
+        try {
+            // Load the JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // Establish the connection
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "username", "password");
+            // Create a statement object
+            Statement statement = connection.createStatement();
+            // Execute a query
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+            // Process the result set
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name"));
+            }
+            // Close the connection
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>Connecting to Oracle Database Using JDBC</h3>
+      <p>To connect to an Oracle database using JDBC, follow these steps:</p>
+      <ol>
+        <li>Ensure you have the Oracle JDBC driver (e.g., <code>ojdbc8.jar</code>) added to your classpath.</li>
+        <li>Load the Oracle JDBC driver class using <code>Class.forName("oracle.jdbc.driver.OracleDriver")</code>.</li>
+        <li>Establish a connection to the database using <code>DriverManager.getConnection()</code> with the database URL, username, and password.</li>
+        <li>Create a statement object to execute SQL queries.</li>
+        <li>Process the result set returned from the query.</li>
+        <li>Close the connection after the operations are completed.</li>
+      </ol>
+      <h4>Example Code for Oracle Connection:</h4>
+      <pre><code>
+import java.sql.*;
+
+public class OracleJDBC {
+    public static void main(String[] args) {
+        try {
+            // Load the JDBC driver
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            // Establish the connection
+            Connection connection = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:orcl", "username", "password");
+            // Create a statement object
+            Statement statement = connection.createStatement();
+            // Execute a query
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM employees");
+            // Process the result set
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("name"));
+            }
+            // Close the connection
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>JDBC API Classes and Interfaces</h3>
+      <p>The JDBC API provides several classes and interfaces for interacting with a database. Below are some key classes and interfaces in JDBC:</p>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Class/Interface</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DriverManager</strong></td>
+            <td>Manages a list of database drivers. It is used to establish a connection to the database.</td>
+          </tr>
+          <tr>
+            <td><strong>Connection</strong></td>
+            <td>Represents an open connection to a database. It provides methods for creating statements and managing transactions.</td>
+          </tr>
+          <tr>
+            <td><strong>Statement</strong></td>
+            <td>Used to execute SQL queries against the database. It is used to create SQL queries and update operations.</td>
+          </tr>
+          <tr>
+            <td><strong>PreparedStatement</strong></td>
+            <td>A subclass of Statement that allows you to execute precompiled SQL statements. It is more efficient and secure than Statement.</td>
+          </tr>
+          <tr>
+            <td><strong>ResultSet</strong></td>
+            <td>Represents the result set of a query. It contains data retrieved from the database based on an SQL query.</td>
+          </tr>
+          <tr>
+            <td><strong>SQLException</strong></td>
+            <td>Represents any SQL-related exception that occurs while interacting with the database. It provides detailed error messages.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Summary Table of JDBC Classes and Interfaces</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Class/Interface</th>
+            <th>Description</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DriverManager</td>
+            <td>Manages JDBC drivers.</td>
+            <td>Used to establish database connections.</td>
+          </tr>
+          <tr>
+            <td>Connection</td>
+            <td>Represents an open connection to the database.</td>
+            <td>Used to create statements and manage transactions.</td>
+          </tr>
+          <tr>
+            <td>Statement</td>
+            <td>Executes SQL queries.</td>
+            <td>Used to send SQL commands to the database.</td>
+          </tr>
+          <tr>
+            <td>PreparedStatement</td>
+            <td>Executes precompiled SQL statements.</td>
+            <td>Used for executing dynamic SQL queries securely.</td>
+          </tr>
+          <tr>
+            <td>ResultSet</td>
+            <td>Represents the result of a query.</td>
+            <td>Used to retrieve data from the database after executing a query.</td>
+          </tr>
+          <tr>
+            <td>SQLException</td>
+            <td>Exception thrown for SQL errors.</td>
+            <td>Used for exception handling in JDBC operations.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

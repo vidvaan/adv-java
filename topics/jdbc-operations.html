@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JDBC DML Operations and Statement Methods</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JDBC DML Operations and Statement Methods -->
+    <section>
+      <h2>JDBC Operations with Statement</h2>
+      <p>JDBC allows us to perform Data Manipulation Language (DML) operations and Data retrieval  Language (DRL) operations such as Insert, Update, Delete, Select, and Batch Update on a database. Below are examples of these operations and explanations of key JDBC statement methods.</p>
+
+      <h3>1. Insert Data</h3>
+      <p>To insert data into a table, use the <code>INSERT INTO</code> SQL command. Here's an example JDBC program to insert data:</p>
+      <pre><code>
+import java.sql.*;
+
+public class InsertDataExample {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            Statement statement = connection.createStatement();
+            
+            String insertQuery = "INSERT INTO Employees (ID, Name, Age, Department) "
+                + "VALUES (1, 'John Doe', 30, 'Engineering')";
+            int rowsAffected = statement.executeUpdate(insertQuery);
+            
+            System.out.println(rowsAffected + " row(s) inserted.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>2. Update Data</h3>
+      <p>To update data in a table, use the <code>UPDATE</code> SQL command. Here's an example JDBC program to update data:</p>
+      <pre><code>
+import java.sql.*;
+
+public class UpdateDataExample {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            Statement statement = connection.createStatement();
+            
+            String updateQuery = "UPDATE Employees SET Age = 31 WHERE ID = 1";
+            int rowsAffected = statement.executeUpdate(updateQuery);
+            
+            System.out.println(rowsAffected + " row(s) updated.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>3. Delete Data</h3>
+      <p>To delete data from a table, use the <code>DELETE FROM</code> SQL command. Here's an example JDBC program to delete data:</p>
+      <pre><code>
+import java.sql.*;
+
+public class DeleteDataExample {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            Statement statement = connection.createStatement();
+            
+            String deleteQuery = "DELETE FROM Employees WHERE ID = 1";
+            int rowsAffected = statement.executeUpdate(deleteQuery);
+            
+            System.out.println(rowsAffected + " row(s) deleted.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>4. Select Data</h3>
+      <p>To retrieve data from a table, use the <code>SELECT</code> SQL command. Here's an example JDBC program to select data:</p>
+      <pre><code>
+import java.sql.*;
+
+public class SelectDataExample {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            Statement statement = connection.createStatement();
+            
+            String selectQuery = "SELECT * FROM Employees";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+            
+            while (resultSet.next()) {
+                System.out.println("ID: " + resultSet.getInt("ID"));
+                System.out.println("Name: " + resultSet.getString("Name"));
+                System.out.println("Age: " + resultSet.getInt("Age"));
+                System.out.println("Department: " + resultSet.getString("Department"));
+            }
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>5. Batch Update</h3>
+      <p>Batch updates allow you to execute multiple SQL statements in a single batch. This is efficient when you need to perform multiple insert, update, or delete operations. Here's an example JDBC program for batch updates:</p>
+      <pre><code>
+import java.sql.*;
+
+public class BatchUpdateExample {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            Statement statement = connection.createStatement();
+            
+            // Add SQL statements to the batch
+            statement.addBatch("INSERT INTO Employees (ID, Name, Age, Department) VALUES (2, 'Jane Doe', 25, 'HR')");
+            statement.addBatch("UPDATE Employees SET Age = 32 WHERE ID = 2");
+            statement.addBatch("DELETE FROM Employees WHERE ID = 2");
+            
+            // Execute the batch
+            int[] results = statement.executeBatch();
+            System.out.println("Batch update completed. " + results.length + " statement(s) executed.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>Summary of JDBC Statement Methods</h3>
+      <p>JDBC provides several statement methods to execute SQL queries and manage database operations. Here's a summary of the key methods:</p>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+            <th>Used For</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>execute()</strong></td>
+            <td>Executes SQL queries that return a single result, or queries that return multiple results.</td>
+            <td>Useful for executing complex queries (e.g., stored procedures).</td>
+            <td><code>statement.execute("SELECT * FROM Employees");</code></td>
+          </tr>
+          <tr>
+            <td><strong>executeUpdate()</strong></td>
+            <td>Executes SQL statements that update, insert, or delete data. Returns the number of affected rows.</td>
+            <td>Used for DML operations like <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code>.</td>
+            <td><code>statement.executeUpdate("INSERT INTO Employees...");</code></td>
+          </tr>
+          <tr>
+            <td><strong>executeQuery()</strong></td>
+            <td>Executes SQL queries that return a result set, such as <code>SELECT</code> statements.</td>
+            <td>Used for SELECT queries.</td>
+            <td><code>resultSet = statement.executeQuery("SELECT * FROM Employees");</code></td>
+          </tr>
+          <tr>
+            <td><strong>executeBatch()</strong></td>
+            <td>Executes a batch of SQL statements in a single request, improving performance for multiple updates.</td>
+            <td>Used for batch inserts, updates, or deletes.</td>
+            <td><code>statement.executeBatch();</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

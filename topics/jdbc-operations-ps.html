@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JDBC PreparedStatement Examples</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JDBC PreparedStatement Examples -->
+    <section>
+      <h2>JDBC PreparedStatement Examples</h2>
+      <p>PreparedStatement in JDBC allows executing parameterized queries with improved performance and security. Below are examples of common database operations using PreparedStatement:</p>
+
+      <h3>1. Insert Data</h3>
+      <p>Use the <code>INSERT INTO</code> SQL command with PreparedStatement to insert data into a table:</p>
+      <pre><code>
+import java.sql.*;
+
+public class InsertDataPreparedStatement {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            
+            String insertQuery = "INSERT INTO Employees (ID, Name, Age, Department) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            
+            preparedStatement.setInt(1, 1);  // Set ID
+            preparedStatement.setString(2, "John Doe"); // Set Name
+            preparedStatement.setInt(3, 30);  // Set Age
+            preparedStatement.setString(4, "Engineering");  // Set Department
+            
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>2. Update Data</h3>
+      <p>Use the <code>UPDATE</code> SQL command with PreparedStatement to update existing data in a table:</p>
+      <pre><code>
+import java.sql.*;
+
+public class UpdateDataPreparedStatement {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            
+            String updateQuery = "UPDATE Employees SET Age = ? WHERE ID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+            
+            preparedStatement.setInt(1, 31);  // Set new Age
+            preparedStatement.setInt(2, 1);   // Set ID
+            
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>3. Delete Data</h3>
+      <p>Use the <code>DELETE FROM</code> SQL command with PreparedStatement to delete data from a table:</p>
+      <pre><code>
+import java.sql.*;
+
+public class DeleteDataPreparedStatement {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            
+            String deleteQuery = "DELETE FROM Employees WHERE ID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+            
+            preparedStatement.setInt(1, 1);  // Set ID to delete
+            
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) deleted.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>4. Select Data</h3>
+      <p>Use the <code>SELECT</code> SQL command with PreparedStatement to retrieve data from a table:</p>
+      <pre><code>
+import java.sql.*;
+
+public class SelectDataPreparedStatement {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            
+            String selectQuery = "SELECT * FROM Employees WHERE Department = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            
+            preparedStatement.setString(1, "Engineering");  // Set Department to filter
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                System.out.println("ID: " + resultSet.getInt("ID"));
+                System.out.println("Name: " + resultSet.getString("Name"));
+                System.out.println("Age: " + resultSet.getInt("Age"));
+                System.out.println("Department: " + resultSet.getString("Department"));
+            }
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>5. Batch Update</h3>
+      <p>Batch updates allow you to execute multiple SQL statements in a single batch. PreparedStatement is useful for batch processing:</p>
+      <pre><code>
+import java.sql.*;
+
+public class BatchUpdatePreparedStatement {
+    public static void main(String[] args) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+            
+            String batchQuery = "INSERT INTO Employees (ID, Name, Age, Department) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(batchQuery);
+            
+            // Add first batch
+            preparedStatement.setInt(1, 2);
+            preparedStatement.setString(2, "Jane Smith");
+            preparedStatement.setInt(3, 28);
+            preparedStatement.setString(4, "HR");
+            preparedStatement.addBatch();
+            
+            // Add second batch
+            preparedStatement.setInt(1, 3);
+            preparedStatement.setString(2, "Mark Lee");
+            preparedStatement.setInt(3, 35);
+            preparedStatement.setString(4, "Sales");
+            preparedStatement.addBatch();
+            
+            // Execute batch
+            int[] results = preparedStatement.executeBatch();
+            System.out.println("Batch update completed. " + results.length + " statement(s) executed.");
+            
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>Summary of JDBC PreparedStatement Methods</h3>
+      <p>Here’s a summary of the key methods used with PreparedStatement:</p>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+            <th>Used For</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>setInt()</strong></td>
+            <td>Sets an integer value for a parameter in the SQL query.</td>
+            <td>Used for setting integer parameters.</td>
+            <td><code>preparedStatement.setInt(1, 1);</code></td>
+          </tr>
+          <tr>
+            <td><strong>setString()</strong></td>
+            <td>Sets a string value for a parameter in the SQL query.</td>
+            <td>Used for setting string parameters.</td>
+            <td><code>preparedStatement.setString(2, "John Doe");</code></td>
+          </tr>
+          <tr>
+            <td><strong>executeUpdate()</strong></td>
+            <td>Executes an SQL statement that updates, inserts, or deletes data.</td>
+            <td>Used for DML operations like <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</td>
+            <td><code>preparedStatement.executeUpdate();</code></td>
+          </tr>
+          <tr>
+            <td><strong>executeQuery()</strong></td>
+            <td>Executes an SQL query that returns a result set.</td>
+            <td>Used for <code>SELECT</code> queries.</td>
+            <td><code>resultSet = preparedStatement.executeQuery();</code></td>
+          </tr>
+          <tr>
+            <td><strong>addBatch()</strong></td>
+            <td>Adds an SQL statement to the batch.</td>
+            <td>Used for batch updates.</td>
+            <td><code>preparedStatement.addBatch();</code></td>
+          </tr>
+          <tr>
+            <td><strong>executeBatch()</strong></td>
+            <td>Executes all the SQL statements in the batch.</td>
+            <td>Used for executing batch updates.</td>
+            <td><code>preparedStatement.executeBatch();</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+    <section>
+        <h3>Comparison Table: Statement vs PreparedStatement</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Statement</th>
+            <th>PreparedStatement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SQL Query</strong></td>
+            <td>Direct SQL query with no parameters.</td>
+            <td>Parameterized query with placeholders for parameters.</td>
+          </tr>
+          <tr>
+            <td><strong>Security</strong></td>
+            <td>More vulnerable to SQL injection attacks.</td>
+            <td>Prevents SQL injection attacks by using parameterized queries.</td>
+          </tr>
+          <tr>
+            <td><strong>Performance</strong></td>
+            <td>Slower when executing the same query multiple times.</td>
+            <td>Faster for repeated queries as it can be precompiled.</td>
+          </tr>
+          <tr>
+            <td><strong>Code Complexity</strong></td>
+            <td>More code for dynamic parameters.</td>
+            <td>Cleaner code with dynamic parameter setting using <code>setXXX</code> methods.</td>
+          </tr>
+          <tr>
+            <td><strong>Use Case</strong></td>
+            <td>Suitable for simple, one-time queries.</td>
+            <td>Ideal for repeated queries or queries with variable parameters.</td>
+          </tr>
+          <tr>
+            <td><strong>Reusability</strong></td>
+            <td>Cannot be reused with different parameters.</td>
+            <td>Can be reused with different parameters by setting new values.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Key Points:</h3>
+      <ul>
+        <li><code>Statement</code> is used for simple queries without parameters.</li>
+        <li><code>PreparedStatement</code> is used for queries with parameters and offers better performance and security.</li>
+        <li>While <code>Statement</code> re-creates the SQL query each time, <code>PreparedStatement</code> can be precompiled, improving efficiency, especially when executing the same query multiple times.</li>
+        <li><code>PreparedStatement</code> helps prevent SQL injection attacks by using placeholders for parameters, making it more secure than <code>Statement</code>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

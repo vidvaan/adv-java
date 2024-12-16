@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Java with JDBC, Servlets, JSP</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Introduction to Advanced Java with JDBC, Servlets, and JSP -->
+    <section>
+      <h2>Advanced Java with JDBC, Servlets, and JSP</h2>
+      <p>In this section, we will explore the concepts related to Advanced Java including JDBC, Servlets, and JSP. These technologies are essential for developing dynamic web applications and understanding the underlying architecture of web-based applications.</p>
+
+      <!-- Web Page Concepts -->
+      <h3>What is a Web Page?</h3>
+      <p>A web page is a document that is displayed in a web browser when accessed via a URL. Web pages are typically written in HTML and can include text, images, videos, forms, and links to other pages. They form the basic building blocks of a website.</p>
+
+      <!-- Static vs Dynamic Web Page -->
+      <h3>Static vs Dynamic Web Page</h3>
+      <p>Web pages can be categorized into two types: Static and Dynamic.</p>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Static Web Page</th>
+            <th>Dynamic Web Page</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Content</td>
+            <td>Fixed content, does not change unless manually updated.</td>
+            <td>Content can change dynamically based on user input or backend processing.</td>
+          </tr>
+          <tr>
+            <td>Technology</td>
+            <td>HTML, CSS, JavaScript.</td>
+            <td>HTML, CSS, JavaScript, Server-side technologies (Servlets, JSP, PHP, etc.).</td>
+          </tr>
+          <tr>
+            <td>Interactivity</td>
+            <td>Minimal interactivity.</td>
+            <td>Highly interactive, based on user input or external data.</td>
+          </tr>
+          <tr>
+            <td>Examples</td>
+            <td>Simple landing pages, informational sites.</td>
+            <td>Online shopping carts, social media feeds, dynamic forms.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Layers in Dynamic Web Application -->
+      <h3>Layers in a Dynamic Web Application</h3>
+      <p>A dynamic web application typically follows a layered architecture. Below are the primary layers that make up a dynamic web application:</p>
+      <ul>
+        <li><strong>Presentation Layer:</strong> This is the front-end layer where the user interacts with the application. It includes web pages, UI components, and forms. Technologies used: HTML, CSS, JavaScript, JSP.</li>
+        <li><strong>Controller Layer:</strong> This layer manages user requests, processes them, and forwards them to the appropriate service. Technologies used: Servlets, Spring MVC.</li>
+        <li><strong>Service Layer:</strong> This layer contains the business logic and processes the requests from the controller. Technologies used: Java Beans, EJB, Spring Services.</li>
+        <li><strong>Persistence Layer:</strong> This layer interacts with the database and manages the data. It handles CRUD (Create, Read, Update, Delete) operations. Technologies used: JDBC, Hibernate, JPA.</li>
+      </ul>
+
+      <!-- Summary Table -->
+      <h3>Summary of Layers in Dynamic Web Application</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Description</th>
+            <th>Technologies Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Presentation Layer</td>
+            <td>Handles user interface and interaction.</td>
+            <td>HTML, CSS, JavaScript, JSP, Thymeleaf</td>
+          </tr>
+          <tr>
+            <td>Controller Layer</td>
+            <td>Manages requests, processes them, and forwards to services.</td>
+            <td>Servlets, Spring MVC</td>
+          </tr>
+          <tr>
+            <td>Service Layer</td>
+            <td>Contains business logic.</td>
+            <td>Java Beans, EJB, Spring Services</td>
+          </tr>
+          <tr>
+            <td>Persistence Layer</td>
+            <td>Handles data storage and retrieval.</td>
+            <td>JDBC, Hibernate, JPA</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- JDBC Introduction -->
+      <h3>JDBC Introduction</h3>
+      <p>Java Database Connectivity (JDBC) is a standard API that allows Java applications to interact with relational databases. It provides methods to query and update databases, making it an essential technology for data-driven applications.</p>
+
+      <h4>Key Features of JDBC:</h4>
+      <ul>
+        <li>Connectivity to databases.</li>
+        <li>Ability to execute SQL queries.</li>
+        <li>Transaction management.</li>
+        <li>Exception handling.</li>
+      </ul>
+
+      <!-- Servlet Introduction -->
+      <h3>Servlet Introduction</h3>
+      <p>A servlet is a Java class that handles HTTP requests and generates responses in a web-based application. It runs on the server-side and is used to extend the capabilities of web servers.</p>
+
+      <h4>Key Features of Servlets:</h4>
+      <ul>
+        <li>Handles HTTP requests.</li>
+        <li>Runs on the server-side.</li>
+        <li>Can interact with databases, process user input, and generate dynamic content.</li>
+      </ul>
+
+      <!-- JSP Introduction -->
+      <h3>JSP Introduction</h3>
+      <p>JavaServer Pages (JSP) is a technology used to create dynamic web pages using Java. It allows embedding Java code directly into HTML pages using special JSP tags.</p>
+
+      <h4>Key Features of JSP:</h4>
+      <ul>
+        <li>Easy integration of Java code within HTML.</li>
+        <li>Supports custom tags and tag libraries.</li>
+        <li>Automatically compiles into servlets for faster execution.</li>
+      </ul>
+
+      <!-- Summary of JDBC, Servlets, and JSP -->
+      <h3>Summary of JDBC, Servlets, and JSP</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Technology</th>
+            <th>Description</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>JDBC</td>
+            <td>API for database connectivity in Java.</td>
+            <td>Used for connecting to databases, executing SQL queries, and managing transactions.</td>
+          </tr>
+          <tr>
+            <td>Servlet</td>
+            <td>Java class to handle HTTP requests and generate responses.</td>
+            <td>Used for managing requests and generating dynamic content in web applications.</td>
+          </tr>
+          <tr>
+            <td>JSP</td>
+            <td>Technology for embedding Java code inside HTML to generate dynamic web pages.</td>
+            <td>Used for creating dynamic pages and displaying content based on user input.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

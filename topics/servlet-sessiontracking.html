@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Tracking in Servlets</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Session Tracking in Servlets -->
+    <section>
+      <h2>Session Tracking in Servlets</h2>
+      <p><strong>Session Tracking</strong> is a way to maintain the state (data) of a user, and it is also known as session management in a servlet. Since the HTTP protocol is stateless, we need to use session tracking techniques to maintain the state of a user and identify the particular user on subsequent requests.</p>
+
+      <h3>Why Use Session Tracking?</h3>
+      <p>Session tracking is used to recognize the user across multiple requests. Since HTTP is stateless, each request is treated as a new one, making it necessary to maintain state between requests.</p>
+
+      <h4>HTTP Protocol - Stateless</h4>
+      <p>HTTP is stateless, meaning each request is treated independently. Below is a simple illustration of how HTTP treats requests:</p>
+      <pre><code>
+      Backward Skip 10s
+      Play Video
+      Forward Skip 10s
+      </code></pre>
+
+      <h3>Session Tracking Techniques</h3>
+      <p>There are four primary techniques used in session tracking:</p>
+      <ol>
+        <li><strong>Cookies</strong></li>
+        <li><strong>Hidden Form Field</strong></li>
+        <li><strong>URL Rewriting</strong></li>
+        <li><strong>HttpSession</strong></li>
+      </ol>
+
+      <h3>1. Cookies</h3>
+      <p>Cookies are small pieces of data stored on the client's browser. They can be used to store the session ID, which is sent back to the server on each subsequent request. Cookies are the most common mechanism used for session tracking.</p>
+
+      <h3>2. Hidden Form Field</h3>
+      <p>In this technique, the session ID is passed as a hidden field in HTML forms. When the user submits a form, the session ID is sent back to the server as part of the form data.</p>
+
+      <h3>3. URL Rewriting</h3>
+      <p>URL rewriting involves appending the session ID to the URL of every request. This ensures that the server can identify the session from the URL, even if cookies are disabled in the client's browser.</p>
+
+      <h3>4. HttpSession</h3>
+      <p>The <code>HttpSession</code> interface in servlets provides a way to store session-specific data on the server side. A session is created by calling <code>request.getSession()</code>, and you can store data using <code>session.setAttribute()</code>.</p>
+
+          </section>
+          <section>
+            <h2>Cookies in Servlets</h2>
+            <p>A cookie is a small piece of information that is persisted between multiple client requests. It allows the server to store data on the client side, which can be retrieved on subsequent requests.</p>
+      
+            <h3>How Cookies Work</h3>
+            <p>By default, each HTTP request is treated as a new request. However, with cookies, we can add a cookie to the response from the servlet. The cookie is then stored in the browser's cache. On subsequent requests, the browser sends the cookie along with the request, allowing the server to recognize the user and maintain state.</p>
+      
+            <h4>Types of Cookies</h4>
+            <p>There are two types of cookies in Servlets:</p>
+            <ul>
+              <li><strong>Non-persistent cookie:</strong> This cookie is valid for a single session and is removed when the user closes the browser.</li>
+              <li><strong>Persistent cookie:</strong> This cookie is valid for multiple sessions and is not removed when the browser is closed. It remains until the user logs out or explicitly deletes it.</li>
+            </ul>
+      
+            <h3>Advantages and Disadvantages of Cookies</h3>
+            <h4>Advantages:</h4>
+            <ul>
+              <li>Simple technique for maintaining state.</li>
+              <li>Cookies are maintained on the client side, reducing server load.</li>
+            </ul>
+            
+            <h4>Disadvantages:</h4>
+            <ul>
+              <li>Cookies may not work if they are disabled in the browser.</li>
+              <li>Only textual information can be stored in cookies.</li>
+            </ul>
+      
+            <h3>Using Cookies in Servlets</h3>
+            <p>The <code>javax.servlet.http.Cookie</code> class provides the functionality to manage cookies in a servlet.</p>
+      
+            <h4>Cookie Constructor</h4>
+            <ul>
+              <li><strong>Cookie(String name, String value):</strong> Constructs a cookie with a specified name and value.</li>
+            </ul>
+      
+            <h4>Useful Methods of the Cookie Class</h4>
+            <table border="1" cellpadding="10">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>setMaxAge(int expiry)</code></td>
+                  <td>Sets the maximum age of the cookie in seconds.</td>
+                </tr>
+                <tr>
+                  <td><code>getName()</code></td>
+                  <td>Returns the name of the cookie. The name cannot be changed after creation.</td>
+                </tr>
+                <tr>
+                  <td><code>getValue()</code></td>
+                  <td>Returns the value of the cookie.</td>
+                </tr>
+                <tr>
+                  <td><code>setName(String name)</code></td>
+                  <td>Changes the name of the cookie.</td>
+                </tr>
+                <tr>
+                  <td><code>setValue(String value)</code></td>
+                  <td>Changes the value of the cookie.</td>
+                </tr>
+              </tbody>
+            </table>
+      
+            <h3>Example: Creating, Deleting, and Retrieving Cookies</h3>
+      
+            <h4>Creating a Cookie</h4>
+            <p>Here’s how to create a cookie and add it to the response:</p>
+            <pre><code>
+      Cookie ck = new Cookie("user", "Balaji Goddu");  // creating cookie object
+      response.addCookie(ck);  // adding cookie to the response
+            </code></pre>
+      
+            <h4>Deleting a Cookie</h4>
+            <p>To delete a cookie, you set its value to an empty string and its maximum age to zero:</p>
+            <pre><code>
+      Cookie ck = new Cookie("user", "");  // deleting the value of the cookie
+      ck.setMaxAge(0);  // changing the maximum age to 0 seconds
+      response.addCookie(ck);  // adding cookie in the response to delete it
+            </code></pre>
+      
+            <h4>Retrieving Cookies</h4>
+            <p>To get the cookies sent with the request, you can use the <code>getCookies()</code> method:</p>
+            <pre><code>
+      Cookie[] ck = request.getCookies();
+      for (int i = 0; i < ck.length; i++) {
+          out.print("&lt;br&gt;" + ck[i].getName() + " " + ck[i].getValue());  // printing name and value of cookie
+      }
+            </code></pre>
+      
+            <h3>Example Servlet: Using Cookies for User Authentication</h3>
+      
+            <h4>index.html</h4>
+            <p>Below is the HTML form where the user inputs their name:</p>
+            <pre><code>
+    &lt;form action="FirstServlet" method="post"&gt;
+        Name: &lt;input type="text" name="userName"/&gt;&lt;br/&gt;
+        &lt;input type="submit" value="go"/&gt;
+      &lt;/form&gt;
+            </code></pre>
+      
+            <h4>FirstServlet.java</h4>
+            <p>The first servlet processes the form and stores the user's name in a cookie:</p>
+            <pre><code>
+      import java.io.*;
+      import javax.servlet.*;
+      import javax.servlet.http.*;
+      
+      public class FirstServlet extends HttpServlet {
+          public void doPost(HttpServletRequest request, HttpServletResponse response) {
+              try {
+                  response.setContentType("text/html");
+                  PrintWriter out = response.getWriter();
+                  String n = request.getParameter("userName");
+      
+                  out.print("Welcome " + n);
+      
+                  // Creating cookie object
+                  Cookie ck = new Cookie("uname", n);
+                  response.addCookie(ck);  // Adding cookie in the response
+      
+                  // Creating submit button
+                  out.print("&lt;form action='SecondServlet'&gt;");
+                  out.print("&lt;input type='submit' value='go'&gt;");
+                  out.print("&lt;/form&gt;");
+                  out.close();
+              } catch (Exception e) {
+                  System.out.println(e);
+              }
+          }
+      }
+            </code></pre>
+      
+            <h4>SecondServlet.java</h4>
+            <p>The second servlet retrieves the user's name stored in the cookie:</p>
+            <pre><code>
+      import java.io.*;
+      import javax.servlet.*;
+      import javax.servlet.http.*;
+      
+      public class SecondServlet extends HttpServlet {
+          public void doPost(HttpServletRequest request, HttpServletResponse response) {
+              try {
+                  response.setContentType("text/html");
+                  PrintWriter out = response.getWriter();
+      
+                  // Retrieving cookies
+                  Cookie[] ck = request.getCookies();
+                  out.print("Hello " + ck[0].getValue());
+      
+                  out.close();
+              } catch (Exception e) {
+                  System.out.println(e);
+              }
+          }
+      }
+            </code></pre>
+      
+          </section>
+              <!-- Section: HttpSession Object Introduction -->
+
+            <!-- Section: HttpSession Object Introduction -->
+    <section>
+        <h2>HttpSession Object in Servlets</h2>
+        <p>The <code>HttpSession</code> object is used to track the session of a user across multiple requests. It allows a server to store information about a user's interactions with the web application, such as login credentials, preferences, or other session-related data. The session is created when a user first visits a web application and persists as long as the user interacts with the application.</p>
+    <p>The <code>HttpServletRequest</code> interface provides two methods to get the object of <code>HttpSession</code>:</p>
+    
+    <ol>
+        <li>
+            <strong>public HttpSession getSession():</strong>
+            <p>Returns the current session associated with this request, or if the request does not have a session, creates one.</p>
+        </li>
+        <li>
+            <strong>public HttpSession getSession(boolean create):</strong>
+            <p>Returns the current <code>HttpSession</code> associated with this request or, if there is no current session and <code>create</code> is true, returns a new session.</p>
+        </li>
+    </ol>
+        <h3>Key Methods in HttpSession</h3>
+        <p>Here’s a breakdown of the key methods available in the <code>HttpSession</code> interface:</p>
+        <table border="1" cellpadding="10">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>getId()</code></td>
+              <td>Returns the unique session ID associated with the session.</td>
+            </tr>
+            <tr>
+              <td><code>getAttribute(String name)</code></td>
+              <td>Retrieves the value of an attribute stored in the session.</td>
+            </tr>
+            <tr>
+              <td><code>setAttribute(String name, Object value)</code></td>
+              <td>Stores an attribute in the session with a given name and value.</td>
+            </tr>
+            <tr>
+              <td><code>removeAttribute(String name)</code></td>
+              <td>Removes an attribute from the session.</td>
+            </tr>
+            <tr>
+              <td><code>getCreationTime()</code></td>
+              <td>Returns the time when the session was created.</td>
+            </tr>
+            <tr>
+              <td><code>getLastAccessedTime()</code></td>
+              <td>Returns the last time the session was accessed.</td>
+            </tr>
+            <tr>
+              <td><code>invalidate()</code></td>
+              <td>Invalidates the session, removing all attributes and ending the session.</td>
+            </tr>
+            <tr>
+              <td><code>getMaxInactiveInterval()</code></td>
+              <td>Returns the maximum time interval (in seconds) between client requests before the session is invalidated.</td>
+            </tr>
+            <tr>
+              <td><code>setMaxInactiveInterval(int interval)</code></td>
+              <td>Sets the maximum time interval (in seconds) before the session is invalidated.</td>
+            </tr>
+            <tr>
+              <td><code>isNew()</code></td>
+              <td>Returns <code>true</code> if the session is newly created, or <code>false</code> if it already exists.</td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <h3>Login and Logout Functionality Example</h3>
+        <p>In the following example, we will implement basic login and logout functionality using <code>HttpSession</code>:</p>
+        <ol>
+          <li><strong>Login</strong>: The user will input their credentials (username and password), and the servlet will check if the credentials are valid. If so, a session will be created to store user information.</li>
+          <li><strong>Logout</strong>: When the user logs out, the session will be invalidated, and the user will be redirected to a logout page.</li>
+        </ol>
+  
+        <h4>Login Page (index.html)</h4>
+        <pre><code>
+  &lt;!DOCTYPE html&gt;
+  &lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Login Page&lt;/title&gt;
+    &lt;link rel="stylesheet" href="../css/styles.css"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="header-container"&gt;&lt;/div&gt;
+  
+    &lt;main&gt;
+      &lt;h2&gt;Login&lt;/h2&gt;
+      &lt;form action="LoginServlet" method="post"&gt;
+        Username: &lt;input type="text" name="username" required/&gt;&lt;br/&gt;
+        Password: &lt;input type="password" name="password" required/&gt;&lt;br/&gt;
+        &lt;input type="submit" value="Login"/&gt;
+      &lt;/form&gt;
+    &lt;/main&gt;
+  
+    &lt;div id="footer-container"&gt;&lt;/div&gt;
+    &lt;script src="../js/scripts.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+        </code></pre>
+  
+        <h4>LoginServlet.java</h4>
+        <pre><code>
+  import java.io.*;
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+  
+  public class LoginServlet extends HttpServlet {
+      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          // Get the user input
+          String username = request.getParameter("username");
+          String password = request.getParameter("password");
+  
+          // Simple validation (this can be replaced with real authentication logic)
+          if ("user".equals(username) && "password".equals(password)) {
+              // Create session and store user information
+              HttpSession session = request.getSession();
+              session.setAttribute("username", username);
+              session.setAttribute("isLoggedIn", true);
+  
+              // Redirect to the welcome page
+              response.sendRedirect("WelcomeServlet");
+          } else {
+              // Invalid login, redirect back to login page
+              response.sendRedirect("index.html");
+          }
+      }
+  }
+        </code></pre>
+  
+        <h4>WelcomeServlet.java</h4>
+        <pre><code>
+  import java.io.*;
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+  
+  public class WelcomeServlet extends HttpServlet {
+      protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          // Get the session
+          HttpSession session = request.getSession(false); // false to avoid creating a new session
+  
+          // Check if session exists and user is logged in
+          if (session != null && session.getAttribute("isLoggedIn") != null && (boolean) session.getAttribute("isLoggedIn")) {
+              // Display welcome message
+              String username = (String) session.getAttribute("username");
+              response.setContentType("text/html");
+              PrintWriter out = response.getWriter();
+              out.println("&lt;h2&gt;Welcome, " + username + "&lt;/h2&gt;");
+              out.println("&lt;a href='LogoutServlet'&gt;Logout&lt;/a&gt;");
+          } else {
+              // Redirect to login page if not logged in
+              response.sendRedirect("index.html");
+          }
+      }
+  }
+        </code></pre>
+  
+        <h4>LogoutServlet.java</h4>
+        <pre><code>
+  import java.io.*;
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+  
+  public class LogoutServlet extends HttpServlet {
+      protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          // Get the session and invalidate it
+          HttpSession session = request.getSession(false);
+          if (session != null) {
+              session.invalidate();  // End the session
+          }
+  
+          // Redirect to the login page
+          response.sendRedirect("index.html");
+      }
+  }
+        </code></pre>
+  
+      </section>
+    
+    </main>
+  
+    <div id="footer-container"></div>
+    <script src="../js/scripts.js"></script>
+  </body>
+  </html>

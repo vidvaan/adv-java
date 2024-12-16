@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet Collaboration</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Servlet Collaboration -->
+    <section>
+      <h2>Servlet Collaboration</h2>
+      <p>Servlet collaboration allows servlets to interact with each other and share data. This can be done in two primary ways: forwarding a request to another servlet or including content from another servlet in the current response. The two mechanisms for achieving this are <strong>RequestDispatcher</strong> and <strong>sendRedirect</strong>.</p>
+
+      <!-- RequestDispatcher -->
+      <h3>1. RequestDispatcher</h3>
+      <p>The <code>RequestDispatcher</code> interface is used to forward a request from one servlet to another or to include content from another servlet or JSP. It enables servlet collaboration, allowing one servlet to pass control to another servlet or include content without the client being aware of it.</p>
+
+      <h4>1.1 Forward</h4>
+      <p>The <code>forward()</code> method of the <code>RequestDispatcher</code> forwards the request to another resource (like a servlet or JSP) on the server. The client does not know about the forwarding process, and the URL in the browser remains unchanged.</p>
+      <pre><code>
+RequestDispatcher dispatcher = request.getRequestDispatcher("/anotherServlet");
+dispatcher.forward(request, response);
+</code></pre>
+      <p>In the example, the request is forwarded to <code>anotherServlet</code> without changing the URL in the browser.</p>
+
+      <h4>1.2 Include</h4>
+      <p>The <code>include()</code> method of the <code>RequestDispatcher</code> includes content from another resource in the current response. The client receives the combined response, and the URL remains unchanged.</p>
+      <pre><code>
+RequestDispatcher dispatcher = request.getRequestDispatcher("/anotherServlet");
+dispatcher.include(request, response);
+</code></pre>
+      <p>In the example, content from <code>anotherServlet</code> is included in the current response.</p>
+
+      <!-- SendRedirect -->
+      <h3>2. sendRedirect</h3>
+      <p>The <code>sendRedirect()</code> method of the <code>HttpServletResponse</code> object sends a redirection response to the client. The client is informed of the redirect, and the browser URL changes to the new location. This is a client-side redirection.</p>
+      <pre><code>
+response.sendRedirect("http://www.example.com");
+</code></pre>
+      <p>In this example, the browser will be redirected to the specified URL, and the URL in the browser will change.</p>
+
+      <!-- Forward vs SendRedirect -->
+      <h3>3. forward() vs sendRedirect()</h3>
+      <p>Both <code>forward()</code> and <code>sendRedirect()</code> are used to direct a request to another resource, but they differ in how the redirection happens and their effects on the client.</p>
+
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>forward()</th>
+            <th>sendRedirect()</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Request Handling</td>
+            <td>Server-side request forwarding</td>
+            <td>Client-side redirection</td>
+          </tr>
+          <tr>
+            <td>URL Visibility</td>
+            <td>URL remains unchanged in the browser</td>
+            <td>URL changes to the new location in the browser</td>
+          </tr>
+          <tr>
+            <td>Performance</td>
+            <td>More efficient (server-side)</td>
+            <td>Less efficient (client-side)</td>
+          </tr>
+          <tr>
+            <td>Use Case</td>
+            <td>When the request must be processed by another servlet or JSP internally</td>
+            <td>When the client needs to be redirected to a different location (e.g., login page after successful login)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+            <!-- Login Form -->
+            <section id="login-form">
+              <h2>RequestDispatcher - forward() Example</h2>
+              <h2>Login Form</h2>
+              <p>This is a simple login form that will be processed by a servlet. Below is the code to handle the login request:</p>
+              <pre><code>
+  &lt;!-- Login Form HTML --&gt;
+  &lt;form action="LoginServlet" method="POST"&gt;
+      &lt;label for="username"&gt;Username:&lt;/label&gt;
+      &lt;input type="text" id="username" name="username" required&gt;&lt;br&gt;&lt;br&gt;
+  
+      &lt;label for="password"&gt;Password:&lt;/label&gt;
+      &lt;input type="password" id="password" name="password" required&gt;&lt;br&gt;&lt;br&gt;
+  
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+  &lt;/form&gt;
+              </code></pre>
+          </section>
+  
+          <!-- Servlet Handling Login -->
+          <section id="servlet-code">
+              <h2>LoginServlet Code</h2>
+              <p>This is the Java code for the LoginServlet that processes the login request and forwards the response to the appropriate page:</p>
+              <pre><code>
+  import java.io.*;
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+  
+  public class LoginServlet extends HttpServlet {
+      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          String username = request.getParameter("username");
+          String password = request.getParameter("password");
+  
+          if ("admin".equals(username) && "admin123".equals(password)) {
+              &lt;!-- Successful login, forward to welcome page --&gt;
+              RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp");
+              dispatcher.forward(request, response);
+          } else {
+              &lt;!-- Login failed, forward to error page --&gt;
+              RequestDispatcher dispatcher = request.getRequestDispatcher("login-error.jsp");
+              dispatcher.forward(request, response);
+          }
+      }
+  }
+              </code></pre>
+          </section>
+  
+          <!-- Welcome Page (JSP) -->
+          <section id="welcome-page">
+              <h2>Welcome Page (welcome.jsp)</h2>
+              <p>This is the JSP code that is displayed after a successful login:</p>
+              <pre><code>
+  &lt;%-- Check if the user is logged in --%&gt;
+  &lt;%@ page contentType="text/html;charset=UTF-8" %&gt;
+  &lt;html&gt;
+  &lt;head&gt;
+      &lt;title&gt;Welcome&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;h2&gt;Welcome, Admin!&lt;/h2&gt;
+      &lt;p&gt;You have successfully logged in.&lt;/p&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+              </code></pre>
+          </section>
+  
+          <!-- Error Page (JSP) -->
+          <section id="error-page">
+              <h2>Login Error Page (login-error.jsp)</h2>
+              <p>This is the JSP code that is displayed when the login fails:</p>
+              <pre><code>
+  &lt;%-- Check for error message --%&gt;
+  &lt;%@ page contentType="text/html;charset=UTF-8" %&gt;
+  &lt;html&gt;
+  &lt;head&gt;
+      &lt;title&gt;Login Failed&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;h2&gt;Login Failed&lt;/h2&gt;
+      &lt;p class="error"&gt;Invalid username or password. Please try again.&lt;/p&gt;
+      &lt;a href="login.html"&gt;Go back to login page&lt;/a&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+              </code></pre>
+          </section>
+          <section id="include-example">
+            <h2>RequestDispatcher - include() Example</h2>
+            <p>The `RequestDispatcher.include()` method is used to include the content of another resource (like a JSP file or servlet) in the response. It’s typically used when you want to include the content of another resource within the current response but without redirecting the user to that resource.</p>
+            
+            <h3>Example Use Case</h3>
+            <p>Let’s say you have a main servlet or JSP that needs to include a footer from a separate JSP file. Below is an example of using `RequestDispatcher.include()` to include the content of a footer JSP in the main page.</p>
+            
+            <h4>Steps:</h4>
+            <ol>
+                <li>Get the `RequestDispatcher` for the resource you want to include.</li>
+                <li>Call the `include()` method on the dispatcher.</li>
+            </ol>
+
+            <h4>Code Example</h4>
+            <pre><code>
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class MainServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Set content type
+        response.setContentType("text/html");
+
+        // Get the PrintWriter object to write response
+        PrintWriter out = response.getWriter();
+
+        // Write some content for the main page
+        out.println("&lt;html&gt;");
+        out.println("&lt;head&gt;&lt;title&gt;Main Page&lt;/title&gt;&lt;/head&gt;");
+        out.println("&lt;body&gt;");
+        out.println("&lt;h1&gt;Welcome to the Main Page&lt;/h1&gt;");
+        out.println("&lt;p&gt;Here is the content of the main page.&lt;/p&gt;");
+
+        // Get the RequestDispatcher for the footer
+        RequestDispatcher dispatcher = request.getRequestDispatcher("footer.jsp");
+
+        // Include the content of the footer.jsp in the response
+        dispatcher.include(request, response);
+
+        out.println("&lt;/body&gt;");
+        out.println("&lt;/html&gt;");
+    }
+}
+            </code></pre>
+
+            <h4>footer.jsp</h4>
+            <pre><code>
+&lt;%-- footer.jsp --%&gt;
+&lt;footer&gt;
+    &lt;p&gt;This is the footer content.&lt;/p&gt;
+    &lt;p&gt;&copy; 2024 My Website&lt;/p&gt;
+&lt;/footer&gt;
+            </code></pre>
+
+            <h3>Explanation:</h3>
+            <p>In this example, the `MainServlet` sends content for the main page, including a title and some text. It then uses `RequestDispatcher` to include the content from the `footer.jsp` into the response, such as the footer text. The `include()` method allows us to include the content of the footer without making a separate request or redirecting the user.</p>
+
+            <h3>When to Use RequestDispatcher Include</h3>
+            <p>You would typically use the `include()` method when:</p>
+            <ul>
+                <li>You want to include content from another resource in the current response.</li>
+                <li>You want to include common elements such as headers, footers, or navigation menus.</li>
+                <li>You are working with dynamic content that should be displayed on multiple pages, like a footer or sidebar.</li>
+            </ul>
+        </section>
+        <section id="send-redirect-example">
+          <h2>Send Redirect Method  Example</h2>
+          <p>The `sendRedirect()` method is used to redirect the user to a different URL. Unlike the `RequestDispatcher`, which forwards the request within the same server, `sendRedirect()` sends a new HTTP request to the browser, which then sends a request to the new URL. This results in a new round-trip to the server.</p>
+          
+          <h3>Example Use Case</h3>
+          <p>In this example, when the user logs in, the servlet will redirect them to a "welcome" page after successful login.</p>
+
+          <h4>Code Example</h4>
+          <pre><code>
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      // Get user credentials from request
+      String username = request.getParameter("username");
+      String password = request.getParameter("password");
+
+      // Simulating a login check
+      if ("admin".equals(username) && "password".equals(password)) {
+          // Redirecting to the welcome page upon successful login
+          response.sendRedirect("welcome.jsp");
+      } else {
+          // Redirecting to the login page upon failure
+          response.sendRedirect("login.jsp");
+      }
+  }
+}
+          </code></pre>
+
+          <h4>Explanation:</h4>
+          <p>In this example, the `LoginServlet` checks the provided username and password. If they match the hardcoded credentials ("admin" and "password"), the servlet redirects the user to the "welcome.jsp" page using `response.sendRedirect("welcome.jsp")`. If the credentials are incorrect, the user is redirected back to the "login.jsp" page.</p>
+
+          <h3>Redirecting to External URLs</h3>
+          <p>You can also use `sendRedirect()` to redirect to an external URL. For example:</p>
+
+          <pre><code>
+response.sendRedirect("https://www.example.com");
+          </code></pre>
+
+          <h3>Key Points:</h3>
+          <ul>
+              <li>The `sendRedirect()` method sends a new HTTP request to the client’s browser, which then makes a new request to the target URL.</li>
+              <li>It can be used to redirect to either an internal resource (another page or servlet) or an external URL.</li>
+              <li>After calling `sendRedirect()`, the response is committed, and no further content can be written to the response body.</li>
+          </ul>
+
+      </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

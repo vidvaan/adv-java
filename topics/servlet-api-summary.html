@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet API Summary</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Servlet API Summary -->
+    <section>
+      <h2>Servlet API Summary</h2>
+      <p>This table provides a comprehensive summary of key Servlet API classes, detailing when objects are created, who creates them, how many times they are created, and when they are invoked, along with code snippets for better understanding.</p>
+
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Class/Interface</th>
+            <th>When Object is Created</th>
+            <th>Who Creates the Object</th>
+            <th>How Many Times Created</th>
+            <th>When It Is Invoked</th>
+            <th>Code Snippet</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Servlet</strong></td>
+            <td>When the servlet is loaded for the first time.</td>
+            <td>Servlet Container</td>
+            <td>Once per servlet definition.</td>
+            <td>When a request matching the servlet’s URL pattern is received.</td>
+            <td>
+              public class MyServlet extends HttpServlet {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;@Override<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;public void doGet(HttpServletRequest req, HttpServletResponse res) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Logic here<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>HttpServletRequest</strong></td>
+            <td>For every client request.</td>
+            <td>Servlet Container</td>
+            <td>Once per request.</td>
+            <td>When a request is made by the client.</td>
+            <td>
+              @Override<br>
+              protected void doGet(HttpServletRequest req, HttpServletResponse res) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;String parameter = req.getParameter("name");<br>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>HttpServletResponse</strong></td>
+            <td>For every client request.</td>
+            <td>Servlet Container</td>
+            <td>Once per request.</td>
+            <td>When a response is sent to the client.</td>
+            <td>
+              @Override<br>
+              protected void doGet(HttpServletRequest req, HttpServletResponse res) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;res.setContentType("text/html");<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;PrintWriter out = res.getWriter();<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;out.println("&lt;h1&gt;Hello, World!&lt;/h1&gt;");<br>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>HttpSession</strong></td>
+            <td>When a new session is created.</td>
+            <td>Servlet Container</td>
+            <td>One per user session.</td>
+            <td>When session-specific data needs to be stored or retrieved.</td>
+            <td>
+              HttpSession session = req.getSession();<br>
+              session.setAttribute("user", "John Doe");
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ServletConfig</strong></td>
+            <td>When the servlet is initialized.</td>
+            <td>Servlet Container</td>
+            <td>Once per servlet.</td>
+            <td>When servlet-specific initialization parameters are needed.</td>
+            <td>
+              @Override<br>
+              public void init(ServletConfig config) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;String param = config.getInitParameter("paramName");<br>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ServletContext</strong></td>
+            <td>When the web application is started.</td>
+            <td>Servlet Container</td>
+            <td>Once per web application.</td>
+            <td>When application-wide parameters or resources are needed.</td>
+            <td>
+              ServletContext context = getServletContext();<br>
+              String appName = context.getInitParameter("appName");
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Cookie</strong></td>
+            <td>When a developer creates it in response to a request.</td>
+            <td>Developer</td>
+            <td>As many as needed per request/response.</td>
+            <td>When client-specific data needs to persist across multiple requests.</td>
+            <td>
+              Cookie cookie = new Cookie("user", "John Doe");<br>
+              res.addCookie(cookie);
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ServletListener</strong></td>
+            <td>When the servlet context is initialized or destroyed.</td>
+            <td>Servlet Container</td>
+            <td>Once per context initialization or destruction.</td>
+            <td>When the servlet container starts or stops the web application.</td>
+            <td>
+              public class MyListener implements ServletContextListener {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;public void contextInitialized(ServletContextEvent sce) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Context Initialized");<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;public void contextDestroyed(ServletContextEvent sce) {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Context Destroyed");<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+              }
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td>When a request is passed through a filter.</td>
+            <td>Servlet Container</td>
+            <td>Once per request/response cycle.</td>
+            <td>When modifying request or response objects before passing them to the servlet or filter chain.</td>
+            <td>
+              public class MyFilter implements Filter {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Filtering request...");<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chain.doFilter(request, response);<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+              }
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

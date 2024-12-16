@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JDBC - Create Table and Execute Queries</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JDBC - Create Table and Execute Queries -->
+    <section>
+      <h2>Creating a Table and Executing Queries Using JDBC</h2>
+      <p>In JDBC, you can use SQL commands to create tables, insert data, and execute various queries. Below, we will explore how to create a table and then execute queries using JDBC, with an example program that explains the 5 essential steps.</p>
+
+      <h3>1. How to Create a Table in a Database</h3>
+      <p>To create a table in a database using JDBC, you need to execute a <code>CREATE TABLE</code> SQL statement. Here’s an example of how to create a simple table in a database:</p>
+      <pre><code>
+CREATE TABLE Employees (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Age INT,
+    Department VARCHAR(50)
+);
+      </code></pre>
+      <p>This SQL query creates an <code>Employees</code> table with columns for ID, Name, Age, and Department.</p>
+
+      <h3>2. JDBC - 5 Steps to Execute Queries</h3>
+      <p>To execute queries using JDBC, you can follow these 5 essential steps:</p>
+      <ol>
+        <li><strong>Step 1: Load the JDBC Driver</strong><br>
+          The first step is to load the JDBC driver. This ensures that Java can communicate with the database.
+          <pre><code>Class.forName("com.mysql.cj.jdbc.Driver");</code></pre>
+        </li>
+        <li><strong>Step 2: Establish the Connection</strong><br>
+          Use <code>DriverManager</code> to establish a connection to the database by specifying the database URL, username, and password.
+          <pre><code>Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/database_name", "username", "password");</code></pre>
+        </li>
+        <li><strong>Step 3: Create a Statement Object</strong><br>
+          A <code>Statement</code> object is required to execute SQL queries like <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, etc.
+          <pre><code>Statement statement = connection.createStatement();</code></pre>
+        </li>
+        <li><strong>Step 4: Execute the Query</strong><br>
+          Use the <code>executeUpdate()</code> method for queries like <code>CREATE</code>, <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code>. For retrieving data, use <code>executeQuery()</code>.
+          <pre><code>int result = statement.executeUpdate("CREATE TABLE Employees (ID INT PRIMARY KEY, Name VARCHAR(50), Age INT, Department VARCHAR(50));");</code></pre>
+        </li>
+        <li><strong>Step 5: Close the Connection</strong><br>
+          Always close the connection after executing the queries to release the resources.
+          <pre><code>connection.close();</code></pre>
+        </li>
+      </ol>
+
+      <h3>3. JDBC Example Program</h3>
+      <p>Below is a JDBC program that creates a table in a MySQL database. This program follows the five steps outlined above:</p>
+
+      <h4>JDBC Program Example:</h4>
+      <pre><code>
+import java.sql.*;
+
+public class CreateTableExample {
+    public static void main(String[] args) {
+        // Step 1: Load the JDBC driver
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Driver loaded successfully.");
+
+            // Step 2: Establish a connection to the database
+            Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/your_database", "root", "password");
+
+            // Step 3: Create a statement object
+            Statement statement = connection.createStatement();
+
+            // Step 4: Execute the query (Create Table)
+            String createTableSQL = "CREATE TABLE Employees ("
+                + "ID INT PRIMARY KEY, "
+                + "Name VARCHAR(50), "
+                + "Age INT, "
+                + "Department VARCHAR(50));";
+            int result = statement.executeUpdate(createTableSQL);
+            if (result == 0) {
+                System.out.println("Table created successfully.");
+            }
+
+            // Step 5: Close the connection
+            connection.close();
+            System.out.println("Connection closed.");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+      </code></pre>
+
+      <h3>Explanation of the Program:</h3>
+      <p>Let's go through the program step-by-step:</p>
+      <ol>
+        <li><strong>Loading the JDBC Driver:</strong> The <code>Class.forName("com.mysql.cj.jdbc.Driver")</code> statement loads the MySQL JDBC driver to allow Java to communicate with the MySQL database.</li>
+        <li><strong>Establishing the Connection:</strong> The <code>DriverManager.getConnection()</code> method establishes a connection to the database using the provided database URL, username, and password.</li>
+        <li><strong>Creating a Statement:</strong> A <code>Statement</code> object is created using <code>connection.createStatement()</code> to execute SQL queries.</li>
+        <li><strong>Executing the Query:</strong> The <code>executeUpdate()</code> method is used to execute an SQL statement that modifies the database (like creating a table).</li>
+        <li><strong>Closing the Connection:</strong> Finally, the connection is closed using <code>connection.close()</code> to release the resources.</li>
+      </ol>
+
+      <h3>Summary Table of JDBC Steps</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Description</th>
+            <th>Example Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Step 1</td>
+            <td>Load the JDBC Driver</td>
+            <td><code>Class.forName("com.mysql.cj.jdbc.Driver");</code></td>
+          </tr>
+          <tr>
+            <td>Step 2</td>
+            <td>Establish a Connection</td>
+            <td><code>Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "root", "password");</code></td>
+          </tr>
+          <tr>
+            <td>Step 3</td>
+            <td>Create a Statement Object</td>
+            <td><code>Statement statement = connection.createStatement();</code></td>
+          </tr>
+          <tr>
+            <td>Step 4</td>
+            <td>Execute the Query</td>
+            <td><code>statement.executeUpdate("CREATE TABLE Employees...");</code></td>
+          </tr>
+          <tr>
+            <td>Step 5</td>
+            <td>Close the Connection</td>
+            <td><code>connection.close();</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

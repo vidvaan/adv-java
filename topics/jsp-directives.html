@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSP Directives and Action Elements</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JSP Directives -->
+    <section>
+      <h2>JSP Directives</h2>
+      <p>JSP Directives provide global settings for the entire JSP page. Directives are used to define page-level settings like imports, content type, buffering, and error pages. There are three main types of directives in JSP: <code>page</code>, <code>include</code>, and <code>taglib</code>.</p>
+
+      <h3>1. <code>page</code> Directive</h3>
+      <p>The <code>page</code> directive is used to define various page-level settings such as content type, language, buffering, and error pages. It is placed at the top of the JSP page.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;%@ page attribute="value" %&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8" errorPage="error.jsp" %&gt;
+</code></pre>
+      <p>This example sets the language to Java, the content type to HTML with UTF-8 encoding, and specifies an error page.</p>
+
+      <h3>2. <code>include</code> Directive</h3>
+      <p>The <code>include</code> directive is used to include static content (such as HTML or JSP) at page translation time. It is resolved at the time the JSP is translated into a servlet.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;%@ include file="fileName" %&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;%@ include file="header.jsp" %&gt;
+</code></pre>
+      <p>This example includes the content of <code>header.jsp</code> at the time the page is compiled.</p>
+
+      <h3>3. <code>taglib</code> Directive</h3>
+      <p>The <code>taglib</code> directive is used to define a tag library and its URI. Tag libraries define custom tags that can be used in a JSP page. It is typically used to include custom tag libraries like JSTL (JavaServer Pages Standard Tag Library).</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;%@ taglib uri="uri" prefix="prefix" %&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+</code></pre>
+      <p>This example declares the JSTL core library and uses the prefix <code>c</code> to refer to JSTL tags like <code>&lt;c:if&gt;</code>.</p>
+
+    </section>
+
+    <!-- Section: JSP Action Elements -->
+    <section>
+      <h2>JSP Action Elements</h2>
+      <p>JSP action elements are used to perform operations such as forwarding requests, including files, or using custom tags. They provide dynamic functionality in JSP pages. There are several types of JSP action elements, including <code>forward</code>, <code>include</code>, <code>useBean</code>, <code>setProperty</code>, and <code>getProperty</code>.</p>
+
+      <h3>1. <code>forward</code> Action</h3>
+      <p>The <code>forward</code> action forwards the request to another resource (such as another JSP or servlet).</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;jsp:forward page="url" /&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;jsp:forward page="welcome.jsp" /&gt;
+</code></pre>
+      <p>This example forwards the request to <code>welcome.jsp</code>.</p>
+
+      <h3>2. <code>include</code> Action</h3>
+      <p>The <code>include</code> action includes the content of another resource, such as a JSP file, at request time.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;jsp:include page="url" flush="true" /&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;jsp:include page="footer.jsp" /&gt;
+</code></pre>
+      <p>This example dynamically includes the content of <code>footer.jsp</code> at request time.</p>
+
+      <h3>3. <code>useBean</code> Action</h3>
+      <p>The <code>useBean</code> action is used to create or access a JavaBean (a reusable software component in Java) within the JSP page. It allows you to instantiate and use JavaBeans in the page.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;jsp:useBean id="beanName" class="beanClass" scope="scope" /&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;jsp:useBean id="user" class="com.example.User" scope="session" /&gt;
+</code></pre>
+      <p>This example creates or accesses a <code>User</code> bean in the session scope.</p>
+
+      <h3>4. <code>setProperty</code> Action</h3>
+      <p>The <code>setProperty</code> action is used to set the value of a property in a JavaBean.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;jsp:setProperty name="beanName" property="propertyName" value="value" /&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;jsp:setProperty name="user" property="name" value="John Doe" /&gt;
+</code></pre>
+      <p>This example sets the <code>name</code> property of the <code>user</code> bean to "John Doe".</p>
+
+      <h3>5. <code>getProperty</code> Action</h3>
+      <p>The <code>getProperty</code> action is used to retrieve the value of a property from a JavaBean and display it in the JSP page.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;jsp:getProperty name="beanName" property="propertyName" /&gt;
+</code></pre>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;jsp:getProperty name="user" property="name" /&gt;
+</code></pre>
+      <p>This example retrieves and displays the value of the <code>name</code> property of the <code>user</code> bean.</p>
+
+      <h3>Summary of JSP Action Elements</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Action Element</th>
+            <th>Description</th>
+            <th>Example Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>forward</code></td>
+            <td>Forwards the request to another resource.</td>
+            <td><code>&lt;jsp:forward page="welcome.jsp" /&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>include</code></td>
+            <td>Includes the content of another page at request time.</td>
+            <td><code>&lt;jsp:include page="footer.jsp" /&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>useBean</code></td>
+            <td>Creates or accesses a JavaBean.</td>
+            <td><code>&lt;jsp:useBean id="user" class="com.example.User" scope="session" /&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>setProperty</code></td>
+            <td>Sets the value of a property in a JavaBean.</td>
+            <td><code>&lt;jsp:setProperty name="user" property="name" value="John Doe" /&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>getProperty</code></td>
+            <td>Retrieves the value of a property from a JavaBean and displays it.</td>
+            <td><code>&lt;jsp:getProperty name="user" property="name" /&gt;</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Include Directive vs Include Action Element</h2>
+      <p>In JSP, both the <code>include</code> directive and the <code>include</code> action element are used to include content from other resources, but they work in different ways and are used for different purposes. Let's explore their differences:</p>
+
+      <h3>1. <code>include</code> Directive</h3>
+      <p>The <code>include</code> directive is used to include a static file at translation time. It is processed when the JSP page is being compiled into a servlet. The content from the included file is inserted directly into the JSP page.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;%@ include file="fileName" %&gt;
+</code></pre>
+
+      <h4>Key Points:</h4>
+      <ul>
+        <li>Occurs at translation time, not at request time.</li>
+        <li>Inserts the content of the included file directly into the JSP page during compilation.</li>
+        <li>Best suited for static content that does not change during request processing.</li>
+        <li>Cannot pass data dynamically between the included file and the calling page.</li>
+      </ul>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;%@ include file="header.jsp" %&gt;
+</code></pre>
+      <p>This example includes the content of <code>header.jsp</code> at translation time.</p>
+
+      <h3>2. <code>include</code> Action Element</h3>
+      <p>The <code>include</code> action element is used to include content dynamically at request time. It includes the content from another resource (such as a JSP file) during the execution of the page, allowing for dynamic content inclusion based on the request.</p>
+
+      <h4>Syntax:</h4>
+      <pre><code>
+&lt;jsp:include page="fileName" flush="true" /&gt;
+</code></pre>
+
+      <h4>Key Points:</h4>
+      <ul>
+        <li>Occurs at request time, not at translation time.</li>
+        <li>Allows dynamic inclusion of content during the request processing phase.</li>
+        <li>Can pass data between the included file and the calling page using request attributes.</li>
+        <li>Best suited for dynamic content that may change based on the user's request.</li>
+      </ul>
+
+      <h4>Example:</h4>
+      <pre><code>
+&lt;jsp:include page="footer.jsp" /&gt;
+</code></pre>
+      <p>This example dynamically includes the content of <code>footer.jsp</code> during request time.</p>
+
+      <h3>Comparison Table</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th><code>include</code> Directive</th>
+            <th><code>include</code> Action Element</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Execution Time</td>
+            <td>At translation time (when the JSP is compiled)</td>
+            <td>At request time (when the page is requested)</td>
+          </tr>
+          <tr>
+            <td>Dynamic Content</td>
+            <td>No, static content is included</td>
+            <td>Yes, dynamic content can be included based on the request</td>
+          </tr>
+          <tr>
+            <td>Data Passing</td>
+            <td>No, cannot pass dynamic data</td>
+            <td>Yes, can pass data using request attributes</td>
+          </tr>
+          <tr>
+            <td>Typical Use</td>
+            <td>Static content inclusion (e.g., headers, footers)</td>
+            <td>Dynamic content inclusion (e.g., content based on user data)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>When to Use Which?</h3>
+      <ul>
+        <li>Use the <code>include</code> directive when you want to include static content that does not change during request processing.</li>
+        <li>Use the <code>include</code> action element when you need to include dynamic content and pass data between the included file and the JSP page.</li>
+      </ul>
+    </section>
+
+
+  </main>
+
+  
+
+   <!-- Placeholder for Footer -->
+   <div id="footer-container"></div>
+   <script src="../js/scripts.js"></script>
+</body>
+</html>

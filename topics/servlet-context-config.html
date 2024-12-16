@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet Config and Servlet Context</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <section>
+      <h2>Servlet Config and Servlet Context</h2>
+      <p>In this section, we will discuss the concepts of <code>ServletConfig</code> and <code>ServletContext</code>, their roles in servlet development, and the differences between them. Both are essential components of the Servlet API.</p>
+
+      <!-- ServletConfig -->
+      <h3>1. What is ServletConfig?</h3>
+      <p><code>ServletConfig</code> is an object created by the servlet container for each servlet. It is used to pass configuration information to the servlet during initialization. This information is specific to the servlet and is defined in the <code>web.xml</code> file or using annotations.</p>
+      <ul>
+        <li>Allows the servlet to access initialization parameters.</li>
+        <li>Provides a way to configure servlets individually.</li>
+        <li>Scoped to a specific servlet.</li>
+      </ul>
+
+      <h4>Config Init Parameters Example:</h4>
+      <pre><code>
+<!-- web.xml -->
+&lt;web-app&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ConfigExampleServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.ConfigExampleServlet&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;exampleParam&lt;/param-name&gt;
+            &lt;param-value&gt;Some value&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
+&lt;/web-app&gt;
+      </code></pre>
+
+      <h4>ServletConfig Example:</h4>
+      <pre><code>
+import java.io.IOException;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/configExample")
+public class ConfigExampleServlet extends HttpServlet {
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        String paramValue = config.getInitParameter("exampleParam");
+        System.out.println("Initialization Parameter: " + paramValue);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        response.getWriter().println("&lt;h1&gt;ServletConfig Example&lt;/h1&gt;");
+    }
+}
+      </code></pre>
+
+      <!-- ServletContext -->
+      <h3>2. What is ServletContext?</h3>
+      <p><code>ServletContext</code> is an object created by the servlet container when the application is deployed. It is used to provide information about the web application and allows servlets to communicate with each other.</p>
+      <ul>
+        <li>Provides application-wide initialization parameters.</li>
+        <li>Allows sharing of resources between servlets.</li>
+        <li>Scoped to the entire web application.</li>
+      </ul>
+
+      <h4>Context Parameters Example:</h4>
+      <pre><code>
+<!-- web.xml -->
+&lt;web-app&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;applicationName&lt;/param-name&gt;
+        &lt;param-value&gt;My Web Application&lt;/param-value&gt;
+    &lt;/context-param&gt;
+&lt;/web-app&gt;
+      </code></pre>
+
+      <h4>ServletContext Example:</h4>
+      <pre><code>
+import java.io.IOException;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/contextExample")
+public class ContextExampleServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ServletContext context = getServletContext();
+        String appName = context.getInitParameter("applicationName");
+
+        response.setContentType("text/html");
+        response.getWriter().println("&lt;h1&gt;Application Name: " + appName + "&lt;/h1&gt;");
+    }
+}
+      </code></pre>
+
+      <!-- Differences -->
+      <h3>3. Differences Between ServletConfig and ServletContext</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>ServletConfig</th>
+            <th>ServletContext</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Scope</td>
+            <td>Specific to a single servlet.</td>
+            <td>Shared across the entire web application.</td>
+          </tr>
+          <tr>
+            <td>Initialization Parameters</td>
+            <td>Provides initialization parameters specific to the servlet.</td>
+            <td>Provides initialization parameters for the entire application.</td>
+          </tr>
+          <tr>
+            <td>Access</td>
+            <td>Accessed using <code>getServletConfig()</code> in a servlet.</td>
+            <td>Accessed using <code>getServletContext()</code> in a servlet.</td>
+          </tr>
+          <tr>
+            <td>Purpose</td>
+            <td>Used to configure a specific servlet.</td>
+            <td>Used to share resources and information across servlets.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

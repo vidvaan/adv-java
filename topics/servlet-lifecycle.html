@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet Concepts</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Servlet Application Flow -->
+    <section>
+      <h2>Servlet Application Flow</h2>
+      <p>Servlets are server-side Java programs that process client requests and generate dynamic web content. Below is a typical flow of a Servlet application:</p>
+      <ol>
+        <li>The client sends a request to the web server.</li>
+        <li>The web server passes the request to the appropriate servlet container (e.g., Tomcat).</li>
+        <li>The servlet container identifies the corresponding servlet based on the request URL.</li>
+        <li>If the servlet is not loaded, it is instantiated and initialized.</li>
+        <li>The servlet processes the client request via the <code>service()</code> method.</li>
+        <li>The response is generated and sent back to the client.</li>
+        <li>The servlet remains in memory to handle further requests, or it may be destroyed by the container if idle.</li>
+      </ol>
+    </section>
+
+    <!-- Section: Servlet Life Cycle -->
+    <section>
+      <h2>Servlet Life Cycle</h2>
+      <p>The servlet life cycle is managed by the servlet container and consists of the following stages:</p>
+      <ol>
+        <li><strong>Instantiation:</strong> The servlet object is created by the container when it receives the first request for the servlet or during startup (based on configuration).</li>
+        <li><strong>Initialization:</strong> The container calls the <code>init()</code> method to initialize the servlet. This is called only once during the servlet's lifetime.</li>
+        <li><strong>Service:</strong> The <code>service()</code> method is invoked for each client request. It determines the HTTP method (e.g., GET, POST) and calls the appropriate method (e.g., <code>doGet()</code>, <code>doPost()</code>).</li>
+        <li><strong>Destruction:</strong> The <code>destroy()</code> method is called when the servlet is being removed from memory, allowing it to release any resources.</li>
+      </ol>
+
+      <h3>Example Code for Servlet Life Cycle</h3>
+      <p>The following example demonstrates all the key methods in the servlet life cycle:</p>
+      <pre><code>
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class LifeCycleExampleServlet extends HttpServlet {
+
+    // Called once when the servlet is initialized
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        System.out.println("Servlet is being initialized...");
+    }
+
+    // Handles client requests (called multiple times for each request)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("&lt;h2&gt;Welcome to the Servlet Life Cycle Example&lt;/h2&gt;");
+        out.println("&lt;p&gt;Servlet is processing the request...&lt;/p&gt;");
+        out.println("</body></html>");
+        System.out.println("Processing request...");
+    }
+
+    // Called when the servlet is being destroyed
+    @Override
+    public void destroy() {
+        System.out.println("Servlet is being destroyed...");
+    }
+
+    // Optionally used to get information about the servlet
+    @Override
+    public String getServletInfo() {
+        return "LifeCycleExampleServlet - Demonstrates Servlet Life Cycle";
+    }
+}
+      </code></pre>
+      <h4>Explanation of Methods:</h4>
+      <ul>
+        <li><code>init(ServletConfig config):</code> Initializes the servlet. Called once when the servlet is first loaded.</li>
+        <li><code>doGet(HttpServletRequest request, HttpServletResponse response):</code> Handles HTTP GET requests. This method processes the client’s requests and generates responses.</li>
+        <li><code>destroy():</code> Cleans up resources before the servlet is removed from memory.</li>
+        <li><code>getServletInfo():</code> Provides metadata about the servlet (optional).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>When is the Servlet Object Created?</h2>
+      <p>The servlet object is created by the container:</p>
+      <ul>
+        <li><strong>On first request:</strong> If <code>load-on-startup</code> is not specified, the servlet object is created when the first request is received for the servlet.</li>
+        <li><strong>At server startup:</strong> If <code>load-on-startup</code> is specified in the web.xml or using annotations, the servlet object is created during server startup.</li>
+      </ul>
+      <p><strong>How many times is the servlet object created?</strong> A single servlet object is created per servlet declaration during the web application’s lifetime (singleton pattern). Multiple threads handle concurrent requests to the same servlet instance.</p>
+    </section>
+
+    <!-- Section: Load on Startup -->
+    <section>
+      <h2>What is Load on Startup?</h2>
+      <p>The <code>load-on-startup</code> element in the <code>web.xml</code> file specifies whether a servlet should be loaded at server startup or on the first request:</p>
+      <ul>
+        <li>If the value is a positive integer, the servlet will be loaded at server startup. The value determines the loading order (lower values are loaded first).</li>
+        <li>If not specified or set to a negative value, the servlet will be loaded lazily on the first request.</li>
+      </ul>
+      <h4>Example Configuration in <code>web.xml</code>:</h4>
+      <pre><code>
+<servlet>
+  <servlet-name>ExampleServlet</servlet-name>
+  <servlet-class>com.example.ExampleServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>
+      </code></pre>
+    </section>
+
+    <!-- Section: Web.xml -->
+    <section>
+      <h2>What is web.xml?</h2>
+      <p>The <code>web.xml</code> file, also known as the deployment descriptor, is an XML file used to configure servlets and other web application settings. It is located in the <code>WEB-INF</code> directory of a Java web application.</p>
+      <h4>Key Configurations in <code>web.xml</code>:</h4>
+      <ul>
+        <li>Servlet declarations and mappings.</li>
+        <li>Session configuration.</li>
+        <li>Security settings (e.g., authentication, authorization).</li>
+        <li>Application context parameters.</li>
+      </ul>
+      <h4>Example <code>web.xml</code>:</h4>
+      <pre><code>
+<web-app>
+  <servlet>
+    <servlet-name>ExampleServlet</servlet-name>
+    <servlet-class>com.example.ExampleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExampleServlet</servlet-name>
+    <url-pattern>/example</url-pattern>
+  </servlet-mapping>
+</web-app>
+      </code></pre>
+    </section>
+
+    <!-- Section: @WebServlet Annotation -->
+    <section>
+      <h2>@WebServlet Annotation</h2>
+      <p>The <code>@WebServlet</code> annotation is an alternative to configuring servlets in the <code>web.xml</code> file. It is used to declare a servlet and map it to a URL pattern directly in the Java code.</p>
+      <h4>Example Using <code>@WebServlet</code>:</h4>
+      <pre><code>
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+
+@WebServlet(name = "ExampleServlet", urlPatterns = {"/example"})
+public class ExampleServlet extends HttpServlet {
+    // Servlet implementation
+}
+      </code></pre>
+      <h4>Benefits of Using @WebServlet:</h4>
+      <ul>
+        <li>Simplifies servlet configuration.</li>
+        <li>Eliminates the need for <code>web.xml</code> in many cases.</li>
+        <li>Provides cleaner and more maintainable code.</li>
+      </ul>
+    </section>
+
+    <!-- Other Sections -->
+    <!-- (Sections for When Servlet Object Created, Load on Startup, web.xml, and @WebServlet Annotation remain unchanged) -->
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

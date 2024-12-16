@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction Management</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main>
+    <section>
+        <h2>What is Transaction Management?</h2>
+        <p>Transaction management is a process that ensures data consistency, reliability, and integrity when multiple operations are performed as part of a single logical unit of work.</p>
+        <p>A transaction in a database is a sequence of operations performed as a single unit that must either completely succeed or completely fail.</p>
+      </section>
+    
+      <section>
+        <h2>Need for Transaction Management</h2>
+        <ul>
+          <li>Ensures data consistency across multiple operations.</li>
+          <li>Prevents data corruption during concurrent access.</li>
+          <li>Supports rollback in case of errors or failures.</li>
+          <li>Maintains the integrity of the database.</li>
+        </ul>
+      </section>
+    
+      <section>
+        <h2>ACID Properties</h2>
+        <p>ACID properties ensure reliable processing of transactions in a database:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Atomicity</td>
+              <td>All operations in a transaction are executed or none are.</td>
+              <td>Transferring money from one account to another must debit one account and credit another completely or not at all.</td>
+            </tr>
+            <tr>
+              <td>Consistency</td>
+              <td>The database remains in a valid state before and after the transaction.</td>
+              <td>After a transfer, the total balance of both accounts must remain the same.</td>
+            </tr>
+            <tr>
+              <td>Isolation</td>
+              <td>Transactions are executed independently of one another.</td>
+              <td>Two users transferring money simultaneously should not interfere with each other.</td>
+            </tr>
+            <tr>
+              <td>Durability</td>
+              <td>Once a transaction is committed, the changes are permanent.</td>
+              <td>After transferring money, the changes persist even if the system crashes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    
+      <section>
+        <h2>JDBC Transaction Management Example</h2>
+        <p>JDBC allows transaction management by default. The auto-commit mode is enabled, meaning every SQL statement is treated as a transaction. To manage transactions manually:</p>
+        <pre><code>
+    import java.sql.Connection;
+    import java.sql.DriverManager;
+    import java.sql.PreparedStatement;
+    import java.sql.SQLException;
+    
+    public class TransactionManagementExample {
+        public static void main(String[] args) {
+            String url = "jdbc:mysql://localhost:3306/your_database";
+            String user = "root";
+            String password = "password";
+    
+            String insertAccount1 = "UPDATE accounts SET balance = balance - 500 WHERE id = 1";
+            String insertAccount2 = "UPDATE accounts SET balance = balance + 500 WHERE id = 2";
+    
+            try (Connection connection = DriverManager.getConnection(url, user, password)) {
+                // Disable auto-commit mode
+                connection.setAutoCommit(false);
+    
+                try (PreparedStatement stmt1 = connection.prepareStatement(insertAccount1);
+                     PreparedStatement stmt2 = connection.prepareStatement(insertAccount2)) {
+    
+                    stmt1.executeUpdate();
+                    stmt2.executeUpdate();
+    
+                    // Commit the transaction
+                    connection.commit();
+                    System.out.println("Transaction committed successfully.");
+                } catch (SQLException e) {
+                    // Rollback the transaction in case of errors
+                    connection.rollback();
+                    System.err.println("Transaction rolled back due to an error: " + e.getMessage());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+        </code></pre>
+      </section>
+  </main>
+
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

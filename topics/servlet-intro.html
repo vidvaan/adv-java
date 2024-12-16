@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet Introduction</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Servlet Introduction -->
+    <section>
+      <h2>Servlet Introduction</h2>
+      <p>In this section, we will explore the fundamental concepts of Servlets, prerequisites for creating servlets, and the Servlet API. Servlets are an essential component of Java-based web applications, enabling the creation of dynamic and interactive web content.</p>
+
+      <!-- What is Servlet -->
+      <h3>1. What is Servlet?</h3>
+      <p>A Servlet is a Java program that operates on the server side and handles client requests, typically over HTTP. It generates dynamic web content and extends the capabilities of web servers. Servlets are part of the Java EE platform and are managed by a servlet container such as Apache Tomcat.</p>
+      <ul>
+        <li>Acts as a middle layer between client requests and server resources like databases.</li>
+        <li>Ensures platform independence and scalability for web applications.</li>
+        <li>Facilitates server-side processing and dynamic content generation.</li>
+      </ul>
+
+      <!-- Prerequisites for Creating Servlets -->
+      <h3>2. Prerequisites for Creating Servlets</h3>
+      <p>To create and configure servlets, the following prerequisites and software are required:</p>
+      <ul>
+        <li><strong>Java Development Kit (JDK):</strong> A minimum of JDK 8 or later.</li>
+        <li><strong>Integrated Development Environment (IDE):</strong> Eclipse, IntelliJ IDEA, or NetBeans.</li>
+        <li><strong>Web Server/Servlet Container:</strong> Apache Tomcat or any Java EE-compliant server.</li>
+        <li><strong>Basic Knowledge:</strong> Understanding of Java, HTTP, and web development.</li>
+      </ul>
+
+      <!-- How to Create and Configure Servlets -->
+      <h3>3. How to Create and Configure Servlets</h3>
+      <ol>
+        <li>Create a Java class that extends the `HttpServlet` class.</li>
+        <li>Override the `doGet` or `doPost` method to handle HTTP requests.</li>
+        <li>Configure the servlet in the `web.xml` file or use annotations like `@WebServlet`.</li>
+        <li>Deploy the servlet in a servlet container like Apache Tomcat.</li>
+      </ol>
+
+      <h4>web.xml Configuration Example:</h4>
+      <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="4.0"&gt;
+  &lt;!-- Servlet Declaration --&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;MyServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.example.MyServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+
+  &lt;!-- Servlet Mapping --&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;MyServlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/myServlet&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code> </pre>
+
+      <h4>Java Code Example:</h4>
+      <pre><code>
+public class MyServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("&lt;h1&gt;Hello, Servlet!&lt;/h1&gt;");
+    }
+}
+</code> </pre>
+
+      <!-- Servlet API Classes and Interfaces -->
+      <h3>4. Servlet API Classes and Interfaces</h3>
+      <p>The Servlet API provides several classes and interfaces for developing servlets:</p>
+      <ul>
+        <li><strong>HttpServlet:</strong> A class that provides methods to handle HTTP-specific requests (e.g., `doGet`, `doPost`).</li>
+        <li><strong>ServletRequest:</strong> An interface to retrieve client request data.</li>
+        <li><strong>ServletResponse:</strong> An interface to send responses to the client.</li>
+        <li><strong>ServletConfig:</strong> Provides servlet configuration information.</li>
+        <li><strong>ServletContext:</strong> Enables servlets to interact with the servlet container.</li>
+      </ul>
+
+      <!-- Summary Table -->
+      <h3>Summary of Servlet Concepts</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>What is Servlet?</td>
+            <td>A server-side Java program for handling requests and generating dynamic responses.</td>
+          </tr>
+          <tr>
+            <td>Prerequisites</td>
+            <td>JDK, IDE, Servlet Container, and knowledge of Java and HTTP.</td>
+          </tr>
+          <tr>
+            <td>How to Configure</td>
+            <td>Extend HttpServlet, override methods, and configure using web.xml or annotations.</td>
+          </tr>
+          <tr>
+            <td>Key API Components</td>
+            <td>HttpServlet, ServletRequest, ServletResponse, ServletConfig, ServletContext.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

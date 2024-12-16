@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSP Scopes & Expression Language</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JSP Scopes and Expression Language -->
+    <section>
+      <h2>JSP Scopes and Expression Language (EL)</h2>
+
+      <!-- JSP Scopes -->
+      <h3>1. JSP Scopes</h3>
+      <p>JSP scopes define the visibility and lifetime of variables in JSP pages. There are four major scopes in JSP:</p>
+      <ul>
+        <li><strong>pageScope:</strong> This scope is used within the current page only. Once the request is processed, the variable goes out of scope.</li>
+        <li><strong>requestScope:</strong> The variable is available as long as the request is alive. It is visible to all resources that handle the request (e.g., servlets, JSPs, etc.).</li>
+        <li><strong>sessionScope:</strong> This scope allows variables to persist across multiple requests from the same user during a session. It is visible across multiple pages as long as the session is valid.</li>
+        <li><strong>applicationScope:</strong> The variable is available across all servlets and JSPs in the application. It lasts for the entire lifecycle of the web application.</li>
+      </ul>
+
+      <!-- JSP Expression Language -->
+      <h3>2. JSP Expression Language (EL)</h3>
+      <p>JSP Expression Language (EL) provides a simplified syntax for accessing data in JSP pages. It allows you to express dynamic content in a more readable and concise way.</p>
+      <p>EL expressions are written between <code>${}</code> and can be used to access values from various scopes (e.g., page, request, session, application), as well as objects in JavaBeans, collections, or other objects stored in the request.</p>
+
+      <h4>EL Syntax:</h4>
+      <pre><code>
+  ${expression}
+</code></pre>
+      <p>The <code>${}</code> syntax is used to evaluate an expression and display its result.</p>
+
+      <!-- Example: EL Expressions -->
+      <h4>3. EL Expressions Examples:</h4>
+      <p>Here are some examples of EL expressions:</p>
+      <ul>
+        <li><strong>Accessing request scope attribute:</strong> <code>${requestScope.username}</code></li>
+        <li><strong>Accessing session scope attribute:</strong> <code>${sessionScope.user}</code></li>
+        <li><strong>Accessing page scope attribute:</strong> <code>${pageScope.title}</code></li>
+        <li><strong>Accessing application scope attribute:</strong> <code>${applicationScope.appName}</code></li>
+        <li><strong>Accessing a JavaBean property:</strong> <code>${user.name}</code></li>
+        <li><strong>Mathematical operations:</strong> <code>${2 + 3}</code></li>
+        <li><strong>Using conditional statements:</strong> <code>${age &gt; 18 ? 'Adult' : 'Minor'}</code></li>
+      </ul>
+
+      <!-- Example Code -->
+      <h4>Example: Accessing Variables with EL:</h4>
+      <pre><code>
+&lt;%-- JSP Page --&gt;
+&lt;%
+  request.setAttribute("username", "John Doe");
+  session.setAttribute("user", "Jane Doe");
+  pageContext.setAttribute("title", "Welcome Page");
+  application.setAttribute("appName", "CIQ demo app");
+%>
+
+&lt;h1&gt;Welcome, ${requestScope.username}&lt;/h1&gt;
+&lt;p&gt;Your session user is: ${sessionScope.user}&lt;/p&gt;
+&lt;p&gt;Page Title: ${pageScope.title}&lt;/p&gt;
+&lt;p&gt;App name: ${application.appName}&lt;/p&gt;
+</code></pre>
+
+
+      <!-- Implicit Objects in EL -->
+      <h3>3. Implicit Objects in EL</h3>
+      <p>JSP provides several implicit objects that can be accessed in EL expressions. These are pre-defined objects that can be used directly within JSP pages.</p>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Implicit Object</th>
+            <th>Description</th>
+            <th>Example in EL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>pageContext</td>
+            <td>Represents the page context, giving access to page-level attributes.</td>
+            <td><code>${pageContext.request}</code></td>
+          </tr>
+          <tr>
+            <td>request</td>
+            <td>Represents the HTTP request that the client sent to the server.</td>
+            <td><code>${request.parameter["username"]}</code></td>
+          </tr>
+          <tr>
+            <td>session</td>
+            <td>Represents the HTTP session for the current user.</td>
+            <td><code>${session.getAttribute("user")}</code></td>
+          </tr>
+          <tr>
+            <td>application</td>
+            <td>Represents the application context, allowing access to application-level attributes.</td>
+            <td><code>${application.getAttribute("appName")}</code></td>
+          </tr>
+          <tr>
+            <td>out</td>
+            <td>Represents the output stream used to send data to the client.</td>
+            <td><code>${out.println("Hello, World!")}</code></td>
+          </tr>
+          <tr>
+            <td>config</td>
+            <td>Represents the servlet configuration for the current servlet.</td>
+            <td><code>${config.getInitParameter("configParam")}</code></td>
+          </tr>
+          <tr>
+            <td>exception</td>
+            <td>Represents an exception thrown during the request processing.</td>
+            <td><code>${exception.message}</code></td>
+          </tr>
+          <tr>
+            <td>requestScope</td>
+            <td>Represents the attributes of the current request.</td>
+            <td><code>${requestScope.username}</code></td>
+          </tr>
+          <tr>
+            <td>sessionScope</td>
+            <td>Represents the attributes of the current session.</td>
+            <td><code>${sessionScope.user}</code></td>
+          </tr>
+          <tr>
+            <td>applicationScope</td>
+            <td>Represents the attributes of the application.</td>
+            <td><code>${applicationScope.appName}</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Summary of JSP Scopes and EL Expressions</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Scope</th>
+            <th>Description</th>
+            <th>EL Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>pageScope</td>
+            <td>Available only within the current page.</td>
+            <td><code>${pageScope.title}</code></td>
+          </tr>
+          <tr>
+            <td>requestScope</td>
+            <td>Available within the current request.</td>
+            <td><code>${requestScope.username}</code></td>
+          </tr>
+          <tr>
+            <td>sessionScope</td>
+            <td>Available within the current session.</td>
+            <td><code>${sessionScope.user}</code></td>
+          </tr>
+          <tr>
+            <td>applicationScope</td>
+            <td>Available throughout the entire application.</td>
+            <td><code>${applicationScope.appName}</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

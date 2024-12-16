@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSP Implicit Objects</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: JSP Implicit Objects -->
+    <section>
+          <section>
+        <h2>JSP Implicit Objects</h2>
+  
+        <p>JSP Implicit Objects are predefined objects provided by the JSP container that are automatically available in JSP pages without the need for explicit declaration. These objects offer essential functionalities like accessing request parameters, response data, session attributes, and more. Below is an explanation and examples of each implicit object:</p>
+  
+        <table border="1" cellpadding="10">
+          <thead>
+            <tr>
+              <th>Implicit Object</th>
+              <th>Description</th>
+              <th>Example Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>request</code></td>
+              <td>Represents the client's HTTP request. Used to get request parameters and headers.</td>
+              <td><code>&lt;%= request.getParameter("username") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>response</code></td>
+              <td>Represents the HTTP response sent to the client. Used to set content type and send data to the client.</td>
+              <td><code>&lt;%= response.setContentType("text/html") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>out</code></td>
+              <td>Represents the output stream for sending data to the client.</td>
+              <td><code>&lt;%= out.println("Hello, World!") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>session</code></td>
+              <td>Represents the HTTP session for the current user.</td>
+              <td><code>&lt;%= session.getAttribute("userName") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>application</code></td>
+              <td>Represents the servlet context for the entire web application.</td>
+              <td><code>&lt;%= application.getAttribute("appVersion") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>config</code></td>
+              <td>Represents the servlet configuration for the JSP page.</td>
+              <td><code>&lt;%= config.getInitParameter("maxUsers") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>pageContext</code></td>
+              <td>Represents the page context, which contains page-level attributes and other details.</td>
+              <td><code>&lt;%= pageContext.getAttribute("userSession") %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>exception</code></td>
+              <td>Represents the exception thrown in an error page.</td>
+              <td><code>&lt;%= exception.getMessage() %&gt;</code></td>
+            </tr>
+            <tr>
+              <td><code>page</code></td>
+              <td>Refers to the current JSP page (the page itself as an object).</td>
+              <td><code>&lt;%= page %&gt;</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>1. <code>request</code></h3>
+        <p>The <code>request</code> object represents the HTTP request from the client. It is an instance of <code>HttpServletRequest</code> and provides methods to access the request parameters, headers, and other request-related data.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= request.getParameter("username") %&gt;
+  </code></pre>
+        <p>This example retrieves the "username" parameter from the HTTP request.</p>
+  
+        <h3>2. <code>response</code></h3>
+        <p>The <code>response</code> object represents the HTTP response sent from the server to the client. It is an instance of <code>HttpServletResponse</code>, which allows you to set content types, write output to the client, and manage other response-related data.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= response.setContentType("text/html") %&gt;
+  </code></pre>
+        <p>This example sets the content type of the response to HTML.</p>
+  
+        <h3>3. <code>out</code></h3>
+        <p>The <code>out</code> object is used to send data to the client. It is an instance of <code>JspWriter</code>, and methods like <code>println()</code> are used to write output to the response.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= out.println("Hello, World!") %&gt;
+  </code></pre>
+        <p>This example prints "Hello, World!" to the client’s browser.</p>
+  
+        <h3>4. <code>session</code></h3>
+        <p>The <code>session</code> object represents the current user's HTTP session. It is an instance of <code>HttpSession</code>, and it allows you to store session-related data (e.g., user login information).</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= session.getAttribute("userName") %&gt;
+  </code></pre>
+        <p>This example retrieves the "userName" attribute stored in the current session.</p>
+  
+        <h3>5. <code>application</code></h3>
+        <p>The <code>application</code> object represents the servlet context for the entire web application. It is an instance of <code>ServletContext</code>, and it can be used to store and retrieve application-wide attributes.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= application.getAttribute("appVersion") %&gt;
+  </code></pre>
+        <p>This example retrieves the "appVersion" attribute stored in the application context.</p>
+  
+        <h3>6. <code>config</code></h3>
+        <p>The <code>config</code> object represents the servlet configuration for the current JSP page. It is an instance of <code>ServletConfig</code>, providing access to initialization parameters specific to the servlet.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= config.getInitParameter("maxUsers") %&gt;
+  </code></pre>
+        <p>This example retrieves the "maxUsers" initialization parameter from the servlet configuration.</p>
+  
+        <h3>7. <code>pageContext</code></h3>
+        <p>The <code>pageContext</code> object provides a variety of page-related information such as attributes, request, session, and application scopes. It simplifies the management of JSP attributes.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= pageContext.getAttribute("userSession") %&gt;
+  </code></pre>
+        <p>This example retrieves the "userSession" attribute from the page context.</p>
+  
+        <h3>8. <code>exception</code></h3>
+        <p>The <code>exception</code> object is available only in error pages and represents the exception that was thrown. It is used to display error details.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= exception.getMessage() %&gt;
+  </code></pre>
+        <p>This example displays the error message of the exception that was thrown during the request processing.</p>
+  
+        <h3>9. <code>page</code></h3>
+        <p>The <code>page</code> object refers to the current JSP page itself. It is an instance of <code>Object</code> (the current servlet page) and can be used to access page-specific data.</p>
+  
+        <h4>Example:</h4>
+        <pre><code>
+  &lt;%= page %&gt;
+  </code></pre>
+        <p>This example refers to the current page object.</p>
+  
+      </section>
+
+      <h3>Example Usage of Implicit Objects</h3>
+
+      <p>Here’s a simple example where the JSP page uses several implicit objects to display user information:</p>
+
+      <pre><code>
+&lt;%-- userInfo.jsp --%>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;User Information&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Welcome, &lt;%= request.getParameter("username") %&gt;!&lt;/h1&gt;
+    &lt;% 
+      String sessionUser = (String) session.getAttribute("userName");
+      if (sessionUser != null) {
+    %&gt;
+      &lt;p&gt;Your session username is: &lt;%= sessionUser %&gt;&lt;/p&gt;
+    &lt;% } else { %&gt;
+      &lt;p&gt;You are not logged in.&lt;/p&gt;
+    &lt;% } %&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+      <p>In this example, the following implicit objects are used:</p>
+      <ul>
+        <li><code>request</code>: To fetch the "username" parameter from the URL or form.</li>
+        <li><code>session</code>: To check if the user has a session attribute for "userName".</li>
+      </ul>
+
+      <h3>When to Use Implicit Objects</h3>
+      <p>Implicit objects are often used in JSP to:</p>
+      <ul>
+        <li>Fetch request parameters sent by the client.</li>
+        <li>Access session attributes to manage user-specific data.</li>
+        <li>Write output to the response.</li>
+        <li>Access the entire application context or servlet configuration.</li>
+        <li>Handle exceptions and errors efficiently by displaying error messages.</li>
+      </ul>
+
+      <h3>Summary</h3>
+      <p>JSP implicit objects are pre-defined objects that make it easier to work with various aspects of the request-response cycle. They provide quick access to important information such as the request, response, session, and application context. Understanding and using these objects can greatly simplify the development of dynamic web pages in JSP.</p>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

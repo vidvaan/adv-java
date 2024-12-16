@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet Listeners and Filters</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Servlet Listeners -->
+    <section>
+      <h2>What is a Servlet Listener?</h2>
+      <p>A <code>Servlet Listener</code> is a special class in the Servlet API that listens to specific events in a web application. These events include initialization, destruction, session creation, attribute changes, and more.</p>
+
+      <h3>Types of Servlet Listeners</h3>
+      <ul>
+        <li><strong>ServletContextListener:</strong> Listens to lifecycle events of the <code>ServletContext</code> (application startup and shutdown).</li>
+        <li><strong>HttpSessionListener:</strong> Listens to lifecycle events of <code>HttpSession</code> objects (creation and destruction).</li>
+        <li><strong>ServletRequestListener:</strong> Listens to lifecycle events of <code>ServletRequest</code> (creation and destruction).</li>
+        <li><strong>Attribute Listeners:</strong> Listens to events when attributes are added, removed, or replaced:
+          <ul>
+            <li><code>ServletContextAttributeListener</code></li>
+            <li><code>HttpSessionAttributeListener</code></li>
+            <li><code>ServletRequestAttributeListener</code></li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Example: ServletContextListener</h3>
+      <pre><code>
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+@WebListener
+public class MyServletContextListener implements ServletContextListener {
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+        System.out.println("Application started!");
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+        System.out.println("Application stopped!");
+    }
+}
+      </code></pre>
+    </section>
+
+    <!-- Section: Servlet Filters -->
+    <section>
+      <h2>What is a Filter?</h2>
+      <p>A <code>Filter</code> is an object that intercepts requests and responses in a web application. Filters are used for pre-processing or post-processing requests and responses.</p>
+
+      <h3>Uses of Filters</h3>
+      <ul>
+        <li>Authentication and authorization.</li>
+        <li>Logging and auditing request data.</li>
+        <li>Data compression or decompression.</li>
+        <li>Adding or modifying HTTP headers.</li>
+        <li>Input validation and sanitation.</li>
+      </ul>
+
+      <h3>Example: Filter for Logging</h3>
+      <pre><code>
+import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+
+@WebFilter("/*")
+public class LoggingFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        System.out.println("Filter initialized.");
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        System.out.println("Request received at: " + System.currentTimeMillis());
+        chain.doFilter(request, response); // Pass request to next filter or servlet
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("Filter destroyed.");
+    }
+}
+      </code></pre>
+    </section>
+
+    <!-- Differences between Listeners and Filters -->
+    <section>
+      <h3>Differences Between Listeners and Filters</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Listeners</th>
+            <th>Filters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Purpose</td>
+            <td>Listens to application, session, or request lifecycle events.</td>
+            <td>Intercepts and processes requests and responses.</td>
+          </tr>
+          <tr>
+            <td>Scope</td>
+            <td>Application-wide events like startup, shutdown, or session tracking.</td>
+            <td>Request/response level, applied to specific URL patterns.</td>
+          </tr>
+          <tr>
+            <td>Implementation</td>
+            <td>Implements listener interfaces like <code>ServletContextListener</code>.</td>
+            <td>Implements the <code>Filter</code> interface.</td>
+          </tr>
+          <tr>
+            <td>Usage</td>
+            <td>Session creation, attribute changes, application initialization.</td>
+            <td>Authentication, logging, input validation, header modification.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Placeholder for Footer -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

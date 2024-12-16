@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servlet Concepts and Examples</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Header Placeholder -->
+  <div id="header-container"></div>
+
+  <main>
+    <section>
+        <h2>1. Different Ways to Create a Servlet</h2>
+        <p>In Java, there are several ways to create a servlet, which is essentially a Java class that extends `HttpServlet` to handle HTTP requests and responses. Below are the primary ways to create a servlet:</p>
+  
+        <h3>1. Extending the HttpServlet Class</h3>
+        <p>The most common and standard approach for creating a servlet is to extend the `HttpServlet` class and override its methods, such as `doGet()` and `doPost()`, to handle HTTP requests.</p>
+        <p>This method allows you to define how the servlet responds to different types of HTTP requests, such as GET, POST, PUT, DELETE, etc.</p>
+        <h4>Steps to Create a Servlet by Extending HttpServlet:</h4>
+        <ol>
+          <li>Extend the `HttpServlet` class.</li>
+          <li>Override the `doGet()` and/or `doPost()` method to process client requests.</li>
+          <li>Register the servlet in the `web.xml` file or use annotations to map the servlet to a URL.</li>
+        </ol>
+        <h4>Example Code:</h4>
+        <pre><code>
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+  import java.io.*;
+  
+  public class MyServlet extends HttpServlet {
+      protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          response.setContentType("text/html");
+          PrintWriter out = response.getWriter();
+          out.println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+      }
+  }
+        </code></pre>
+        <p>In this example, the servlet extends `HttpServlet` and overrides the `doGet()` method to respond with "Hello, World!" when accessed via a GET request.</p>
+  
+        <h3>2. Implementing the Servlet Interface</h3>
+        <p>Instead of extending `HttpServlet`, you can directly implement the `Servlet` interface. This approach requires you to implement all the methods defined in the `Servlet` interface, such as `init()`, `service()`, and `destroy()`.</p>
+        <p>This method gives you more control over the lifecycle of the servlet but is less common than extending `HttpServlet`.</p>
+        <h4>Steps to Create a Servlet by Implementing the Servlet Interface:</h4>
+        <ol>
+          <li>Implement the `Servlet` interface.</li>
+          <li>Provide implementations for the `init()`, `service()`, and `destroy()` methods.</li>
+          <li>Register the servlet in the `web.xml` file or use annotations to map the servlet to a URL.</li>
+        </ol>
+        <h4>Example Code:</h4>
+        <pre><code>
+  import javax.servlet.*;
+  import javax.servlet.http.*;
+  import java.io.*;
+  
+  public class MyServlet implements Servlet {
+      public void init(ServletConfig config) throws ServletException { }
+      public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+          response.setContentType("text/html");
+          PrintWriter out = response.getWriter();
+          out.println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+      }
+      public void destroy() { }
+      public ServletConfig getServletConfig() { return null; }
+      public String getServletInfo() { return "MyServlet"; }
+  }
+        </code></pre>
+        <p>In this example, the servlet implements the `Servlet` interface directly and provides the required methods. The `service()` method handles the HTTP request and response.</p>
+  
+       
+  
+        <h3>3. Using the GenericServlet Class</h3>
+        <p>Another option is to create a servlet by extending the `GenericServlet` class. This class implements the `Servlet` interface but provides default implementations for some methods like `init()` and `destroy()`. You only need to override the `service()` method to handle requests.</p>
+        <p>This approach is less common, as the `HttpServlet` class is more specialized for HTTP requests. However, you can use it if you need a generic servlet that does not specifically handle HTTP requests.</p>
+        <h4>Steps to Create a Servlet Using GenericServlet:</h4>
+        <ol>
+          <li>Extend the `GenericServlet` class.</li>
+          <li>Override the `service()` method to process requests.</li>
+          <li>Register the servlet in the `web.xml` file or use annotations to map the servlet to a URL.</li>
+        </ol>
+        <h4>Example Code:</h4>
+        <pre><code>
+  import javax.servlet.*;
+  import java.io.*;
+  
+  public class MyGenericServlet extends GenericServlet {
+      public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+          response.setContentType("text/html");
+          PrintWriter out = response.getWriter();
+          out.println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, Generic Servlet!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
+      }
+  }
+        </code></pre>
+        <p>In this example, the servlet extends `GenericServlet` and overrides the `service()` method to handle requests.</p>
+  
+        <h3>Summary</h3>
+        <p>The four primary ways to create a servlet in Java are:</p>
+        <ul>
+          <li><strong>Extending HttpServlet:</strong> The most common way, where you override methods like `doGet()` and `doPost()`.</li>
+          <li><strong>Implementing the Servlet Interface:</strong> Directly implementing the `Servlet` interface and providing implementations for all required methods.</li>
+          <li><strong>Using Annotations (Servlet 3.0 and Above):</strong> Using the `@WebServlet` annotation for URL mapping, eliminating the need for `web.xml` configuration.</li>
+          <li><strong>Using GenericServlet:</strong> Extending `GenericServlet` and overriding the `service()` method for handling requests.</li>
+        </ul>
+  
+      </section>
+   
+    <section>
+      <!-- Servlet Hierarchy -->
+      <h2>2. Servlet Hierarchy</h2>
+      <p>The servlet hierarchy defines the relationships between various classes and interfaces in the Servlet API:</p>
+      <ul>
+        <li><strong>Servlet Interface:</strong> The root interface for all servlets. It defines lifecycle methods like <code>init()</code>, <code>service()</code>, and <code>destroy()</code>.</li>
+        <li><strong>GenericServlet:</strong> An abstract class that provides a generic, protocol-independent implementation of the Servlet interface.</li>
+        <li><strong>HttpServlet:</strong> A subclass of GenericServlet that provides HTTP-specific methods like <code>doGet()</code> and <code>doPost()</code>.</li>
+      </ul>
+      <pre><code>
+Servlet (Interface)
+  |
+  +-- GenericServlet (Abstract Class)
+        |
+        +-- HttpServlet (Class)
+      </code></pre>
+
+      <!-- HttpServletRequest and HttpServletResponse -->
+      <h2>3. HttpServletRequest and HttpServletResponse</h2>
+
+      <h3>3.1 HttpServletRequest</h3>
+      <p>This interface represents the client's request and provides methods to retrieve:</p>
+      <ul>
+        <li>Request parameters: <code>getParameter(String name)</code></li>
+        <li>Request headers: <code>getHeader(String name)</code></li>
+        <li>Session information: <code>getSession()</code></li>
+        <li>Client data: <code>getRemoteAddr()</code>, <code>getRemoteHost()</code></li>
+      </ul>
+
+      <h3>3.2 HttpServletResponse</h3>
+      <p>This interface represents the server's response and provides methods to:</p>
+      <ul>
+        <li>Set content type: <code>setContentType(String type)</code></li>
+        <li>Write response data: <code>getWriter()</code></li>
+        <li>Set HTTP status codes: <code>setStatus(int code)</code></li>
+        <li>Send redirects: <code>sendRedirect(String location)</code></li>
+      </ul>
+
+      <!-- GenericServlet vs HttpServlet -->
+      <h2>4. Difference Between GenericServlet and HttpServlet</h2>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>GenericServlet</th>
+            <th>HttpServlet</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Protocol</td>
+            <td>Protocol-independent.</td>
+            <td>Designed for HTTP protocol.</td>
+          </tr>
+          <tr>
+            <td>Methods</td>
+            <td>Overrides <code>service()</code>.</td>
+            <td>Provides <code>doGet()</code>, <code>doPost()</code>, and other HTTP-specific methods.</td>
+          </tr>
+          <tr>
+            <td>Use Case</td>
+            <td>For non-HTTP protocols or generic tasks.</td>
+            <td>For web applications using HTTP.</td>
+          </tr>
+          <tr>
+            <td>Ease of Use</td>
+            <td>Less convenient for HTTP-specific tasks.</td>
+            <td>Optimized for handling HTTP requests and responses.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Footer Placeholder -->
+  <div id="footer-container"></div>
+  <script src="../js/scripts.js"></script>
+</body>
+</html>

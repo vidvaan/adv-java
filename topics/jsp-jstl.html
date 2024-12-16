@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSTL Introduction and Core Tags Examples</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <!-- Placeholder for Header -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Section: Introduction to JSTL -->
+    <section>
+      <h2>What is JSTL (JavaServer Pages Standard Tag Library)?</h2>
+      <p>JSTL is a collection of useful tags that encapsulate core functionality commonly used in Java-based web applications. These tags simplify the development of JSP pages by removing the need for embedding Java code in the page.</p>
+      <p>JSTL provides tags for common tasks like iteration, conditionals, formatting, and URL manipulation, improving readability and maintainability of your JSP code.</p>
+
+      <h3>Advantages of JSTL</h3>
+      <ul>
+        <li><strong>Code Cleanliness:</strong> Reduces the need for Java code embedded in JSP pages, leading to cleaner and more maintainable code.</li>
+        <li><strong>Reusable Components:</strong> Provides reusable and standardized tags for common functionalities, reducing redundancy.</li>
+        <li><strong>Separation of Concerns:</strong> Enhances the separation of business logic from presentation logic by using tags for common operations.</li>
+        <li><strong>Improved Performance:</strong> As it reduces the amount of Java code in JSP, it improves page rendering performance.</li>
+      </ul>
+
+      <h3>JSTL Tags</h3>
+      <p>JSTL provides several categories of tags to handle different tasks:</p>
+      <ul>
+        <li><strong>Core Tags:</strong> Basic tags like <code>&lt;c:forEach&gt;</code>, <code>&lt;c:if&gt;</code>, <code>&lt;c:set&gt;</code>, etc.</li>
+        <li><strong>Formatting Tags:</strong> Tags for formatting data such as dates, numbers, and messages.</li>
+        <li><strong>SQL Tags:</strong> Tags for database operations like <code>&lt;sql:query&gt;</code>.</li>
+        <li><strong>XML Tags:</strong> Tags to handle XML processing.</li>
+      </ul>
+
+      <section>
+        <h2>Core JSTL Tags Examples</h2>
+        <p>The JavaServer Pages Standard Tag Library (JSTL) provides a set of core tags that are commonly used in JSP pages. These tags help to perform repetitive tasks such as iteration, conditional rendering, and variable manipulation. Below are examples of various core JSTL tags:</p>
+  
+        <!-- 1. <c:set> - Setting a Variable -->
+        <h3>1. <code>&lt;c:set&gt;</code> - Setting a Variable</h3>
+        <p>The <code>&lt;c:set&gt;</code> tag is used to set a variable in the scope of the page, request, session, or application.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  
+  &lt;c:set var="userName" value="John Doe" /&gt;
+  &lt;p&gt;Hello, ${userName}!&lt;/p&gt;
+  </code></pre>
+        <p>This sets a variable <code>userName</code> with the value "John Doe" and displays it in a paragraph.</p>
+  
+        <!-- 2. <c:forEach> - Iteration -->
+        <h3>2. <code>&lt;c:forEach&gt;</code> - Iteration</h3>
+        <p>The <code>&lt;c:forEach&gt;</code> tag is used to iterate over a collection (e.g., List, Set, Map, etc.) and output its elements.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  &lt;c:set var="fruits" value="apple,banana,orange" /&gt;
+  
+  &lt;c:forEach var="fruit" items="${fruits}"&gt;
+    &lt;p&gt;${fruit}&lt;/p&gt;
+  &lt;/c:forEach&gt;
+  </code></pre>
+        <p>Here, we define a list of fruits and use <code>&lt;c:forEach&gt;</code> to iterate over each fruit and display it in a paragraph.</p>
+  
+        <!-- 3. <c:if> - Conditional Rendering -->
+        <h3>3. <code>&lt;c:if&gt;</code> - Conditional Rendering</h3>
+        <p>The <code>&lt;c:if&gt;</code> tag is used to conditionally include content based on a specified condition.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  &lt;c:set var="isLoggedIn" value="true" /&gt;
+  
+  &lt;c:if test="${isLoggedIn}"&gt;
+    &lt;p&gt;Welcome back, user!&lt;/p&gt;
+  &lt;/c:if&gt;
+  </code></pre>
+        <p>This tag checks if the <code>isLoggedIn</code> variable is true and displays a message if the condition is satisfied.</p>
+  
+        <!-- 4. <c:choose>, <c:when>, <c:otherwise> - Conditional Logic -->
+        <h3>4. <code>&lt;c:choose&gt;</code>, <code>&lt;c:when&gt;</code>, <code>&lt;c:otherwise&gt;</code> - Conditional Logic</h3>
+        <p>The <code>&lt;c:choose&gt;</code> tag is used for more complex conditional logic, allowing for multiple <code>&lt;c:when&gt;</code> and <code>&lt;c:otherwise&gt;</code> blocks.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  
+  &lt;c:choose&gt;
+    &lt;c:when test="${age &gt; 18}"&gt;
+      &lt;p&gt;You are an adult.&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+      &lt;p&gt;You are a minor.&lt;/p&gt;
+    &lt;/c:otherwise&gt;
+  &lt;/c:choose&gt;
+  </code></pre>
+        <p>In this example, we use <code>&lt;c:choose&gt;</code> for complex conditional logic, checking the user's age and displaying different messages based on the result.</p>
+  
+        <!-- 5. <c:import> - Importing Content -->
+        <h3>5. <code>&lt;c:import&gt;</code> - Importing Content</h3>
+        <p>The <code>&lt;c:import&gt;</code> tag allows you to import content from a URL or file into the current page.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  
+  &lt;c:import url="header.html" /&gt;
+  </code></pre>
+        <p>This tag imports the content of an external file (e.g., <code>header.html</code>) and includes it in the current page.</p>
+  
+        <!-- 6. <c:redirect> - Redirecting to Another Page -->
+        <h3>6. <code>&lt;c:redirect&gt;</code> - Redirecting to Another Page</h3>
+        <p>The <code>&lt;c:redirect&gt;</code> tag is used to perform an HTTP redirect to another URL.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  
+  &lt;c:redirect url="https://www.example.com" /&gt;
+  </code></pre>
+        <p>This tag redirects the current request to the specified URL.</p>
+  
+        <!-- 7. <c:remove> - Removing a Variable -->
+        <h3>7. <code>&lt;c:remove&gt;</code> - Removing a Variable</h3>
+        <p>The <code>&lt;c:remove&gt;</code> tag is used to remove a variable from a particular scope.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  
+  &lt;c:set var="message" value="Hello, world!" /&gt;
+  &lt;c:remove var="message" /&gt;
+  &lt;p&gt;${message}&lt;/p&gt;
+  </code></pre>
+        <p>This example sets a variable <code>message</code> and then removes it using <code>&lt;c:remove&gt;</code>.</p>
+  
+        <!-- 8. <c:out> - Output -->
+        <h3>8. <code>&lt;c:out&gt;</code> - Output</h3>
+        <p>The <code>&lt;c:out&gt;</code> tag is used to output a variable or expression to the response.</p>
+        <pre><code>
+  &lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+  
+  &lt;c:out value="${userName}" /&gt;
+  </code></pre>
+        <p>This tag outputs the value of the <code>userName</code> variable to the response.</p>
+  
+        <h3>Summary of Core JSTL Tags</h3>
+        <table border="1" cellpadding="10">
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>&lt;c:set&gt;</td>
+              <td>Sets a variable in the page, request, session, or application scope.</td>
+              <td>&lt;c:set var="userName" value="John" /&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:forEach&gt;</td>
+              <td>Iterates over a collection or array.</td>
+              <td>&lt;c:forEach var="item" items="${items}"&gt;${item}&lt;/c:forEach&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:if&gt;</td>
+              <td>Conditionally includes content based on a test condition.</td>
+              <td>&lt;c:if test="${userLoggedIn}"&gt;Welcome!&lt;/c:if&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:choose&gt;</td>
+              <td>Provides multiple conditional checks (like if-else).</td>
+              <td>&lt;c:choose&gt;&lt;c:when test="${age &gt; 18}"&gt;Adult&lt;/c:when&gt;&lt;c:otherwise&gt;Minor&lt;/c:otherwise&gt;&lt;/c:choose&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:import&gt;</td>
+              <td>Imports content from a URL or file into the JSP page.</td>
+              <td>&lt;c:import url="header.html" /&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:redirect&gt;</td>
+              <td>Redirects the request to another URL.</td>
+              <td>&lt;c:redirect url="https://www.example.com" /&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:remove&gt;</td>
+              <td>Removes a variable from a scope.</td>
+              <td>&lt;c:remove var="message" /&gt;</td>
+            </tr>
+            <tr>
+              <td>&lt;c:out&gt;</td>
+              <td>Outputs a variable or expression to the response.</td>
+              <td>&lt;c:out value="${userName}" /&gt;</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </section>
+
+    <!-- Section: JSTL Formatting Tags -->
+    <section>
+      <h2>JSTL Formatting Tags Examples</h2>
+      <p>JSTL provides several tags for formatting different types of data such as numbers, dates, and strings. These tags help to format data in a way that is locale-sensitive, making it easier to display content in different formats for different regions.</p>
+
+      <!-- 1. <fmt:formatNumber> - Formatting Numbers -->
+      <h3>1. <code>&lt;fmt:formatNumber&gt;</code> - Formatting Numbers</h3>
+      <p>The <code>&lt;fmt:formatNumber&gt;</code> tag is used to format numerical values (such as currency, percentage, or general number) according to a specific pattern or locale.</p>
+      <pre><code>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:formatNumber value="1234567.89" pattern="###,###.##" /&gt;
+</code></pre>
+      <p>This example formats the number <code>1234567.89</code> with commas separating thousands and up to two decimal places.</p>
+
+      <!-- 2. <fmt:formatDate> - Formatting Dates -->
+      <h3>2. <code>&lt;fmt:formatDate&gt;</code> - Formatting Dates</h3>
+      <p>The <code>&lt;fmt:formatDate&gt;</code> tag is used to format dates and times into a specified pattern.</p>
+      <pre><code>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+&lt;fmt:formatDate value="${currentDate}" pattern="yyyy-MM-dd HH:mm:ss" /&gt;
+</code></pre>
+      <p>This example formats the date stored in the variable <code>currentDate</code> into the format <code>yyyy-MM-dd HH:mm:ss</code>.</p>
+
+      <!-- 3. <fmt:formatCurrency> - Formatting Currency -->
+      <h3>3. <code>&lt;fmt:formatCurrency&gt;</code> - Formatting Currency</h3>
+      <p>The <code>&lt;fmt:formatCurrency&gt;</code> tag is used to format a number as a currency value according to the locale.</p>
+      <pre><code>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:formatCurrency value="12345.67" /&gt;
+</code></pre>
+      <p>This example formats the number <code>12345.67</code> as a currency value, displaying it in the appropriate currency format based on the locale (e.g., "$12,345.67" in the US).</p>
+
+      <!-- 4. <fmt:message> - Message Formatting -->
+      <h3>4. <code>&lt;fmt:message&gt;</code> - Message Formatting</h3>
+      <p>The <code>&lt;fmt:message&gt;</code> tag is used to retrieve and display messages from a resource bundle. This is useful for internationalization and localization of content.</p>
+      <pre><code>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:message key="welcome.message" /&gt;
+</code></pre>
+      <p>This tag retrieves the value associated with the key <code>welcome.message</code> from the resource bundle and displays it.</p>
+
+      <!-- 5. <fmt:bundle> - Loading Resource Bundles -->
+      <h3>5. <code>&lt;fmt:bundle&gt;</code> - Loading Resource Bundles</h3>
+      <p>The <code>&lt;fmt:bundle&gt;</code> tag is used to load a resource bundle that contains messages for different languages and locales.</p>
+      <pre><code>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:bundle basename="messages"&gt;
+  &lt;fmt:message key="greeting" /&gt;
+&lt;/fmt:bundle&gt;
+</code></pre>
+      <p>This example loads a resource bundle named "messages" and retrieves the message associated with the key <code>greeting</code>.</p>
+
+      <h3>Summary of JSTL Formatting Tags</h3>
+      <table border="1" cellpadding="10">
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>&lt;fmt:formatNumber&gt;</td>
+            <td>Formats a number according to a specified pattern or locale.</td>
+            <td>&lt;fmt:formatNumber value="1234567.89" pattern="###,###.##" /&gt;</td>
+          </tr>
+          <tr>
+            <td>&lt;fmt:formatDate&gt;</td>
+            <td>Formats a date or time into a specified pattern.</td>
+            <td>&lt;fmt:formatDate value="${currentDate}" pattern="yyyy-MM-dd HH:mm:ss" /&gt;</td>
+          </tr>
+          <tr>
+            <td>&lt;fmt:formatCurrency&gt;</td>
+            <td>Formats a number as a currency value.</td>
+            <td>&lt;fmt:formatCurrency value="12345.67" /&gt;</td>
+          </tr>
+          <tr>
+            <td>&lt;fmt:message&gt;</td>
+            <td>Retrieves and displays a message from a resource bundle.</td>
+            <td>&lt;fmt:message key="welcome.message" /&gt;</td>
+          </tr>
+          <tr>
+            <td>&lt;fmt:bundle&gt;</td>
+            <td>Loads a resource bundle and allows message formatting within it.</td>
+            <td>&lt;fmt:bundle basename="messages"&gt;&lt;fmt:message key="greeting" /&gt;&lt;/fmt:bundle&gt;</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+
+ <!-- Placeholder for Footer -->
+ <div id="footer-container"></div>
+ <script src="../js/scripts.js"></script>
+
+</body>
+</html>
